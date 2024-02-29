@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus Config Download Cycle
+After=cloud-final.service cloud-init.service cloud-config.service
+
+[Service]
+Type=simple
+ExecStart=/prometheus/bin/reload-cycle.sh
+EnvironmentFile=/etc/environment
+User=cloud
+
+[Install]
+WantedBy=multi-user.target

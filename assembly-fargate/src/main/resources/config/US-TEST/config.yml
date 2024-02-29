@@ -1,0 +1,11 @@
+hub: US
+environment: TEST
+region: us-east-1
+profile: US-TEST
+
+prometheus:
+    alertmanagerUrl: <<TODO: set correct Prometheus alert manager URL>>
+    alertRules:
+        - backend.yaml
+    scrapeConfigs:
+        - scrape-configs/backend.yaml

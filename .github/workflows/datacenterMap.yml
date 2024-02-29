@@ -1,0 +1,60 @@
+name: datacenterMap
+
+on:
+  workflow_call:
+    inputs:
+      hubEnv:
+        required: true
+        type: "string"
+    # Map the workflow outputs to job outputs
+    outputs:
+      HUB:
+        value: ${{ jobs.datacenterMap.outputs.HUB }}
+      STAGE:
+        value: ${{ jobs.datacenterMap.outputs.STAGE }}
+      AWS_ACCOUNT:
+        value: ${{ jobs.datacenterMap.outputs.AWS_ACCOUNT }}
+      REGION:
+        value: ${{ jobs.datacenterMap.outputs.REGION }}
+      CLUSTER_NAME:
+        value: ${{ jobs.datacenterMap.outputs.CLUSTER_NAME }}
+      SERVICE_NAME:
+        value: ${{ jobs.datacenterMap.outputs.SERVICE_NAME }}
+      TASK_NAME:
+        value: ${{ jobs.datacenterMap.outputs.TASK_NAME }}
+jobs:
+  datacenterMap:
+    runs-on: ubuntu-latest
+    outputs:
+      HUB: ${{ env.HUB }}
+      STAGE: ${{ env.STAGE }}
+      AWS_ACCOUNT: ${{ env.AWS_ACCOUNT }}
+      REGION: ${{ env.REGION }}
+      CLUSTER_NAME: ${{ env.CLUSTER_NAME }}
+      SERVICE_NAME: ${{ env.SERVICE_NAME }}
+      TASK_NAME: ${{ env.TASK_NAME }}
+    steps:
+      - uses: kanga333/variable-mapper@master
+        with:
+          key: "${{ inputs.hubEnv }}"
+          map: |
+            {
+              "BACKEND_EMEA_TEST": {
+                 "HUB": "EMEA",
+                 "STAGE": "TEST",
+                 "AWS_ACCOUNT": "<<TODO: set account id>>",
+                 "REGION": "eu-central-1",
+                 "CLUSTER_NAME": "backend-ecs-test",
+                 "SERVICE_NAME": "backend-service-test",
+                 "TASK_NAME": "backend-task-test"
+              },
+              "BACKEND_EMEA_E2E": {
+                 "HUB": "EMEA",
+                 "STAGE": "E2E",
+                 "AWS_ACCOUNT": "<<TODO: set account id>>",
+                 "REGION": "eu-central-1",
+                 "CLUSTER_NAME": "backend-ecs-e2e",
+                 "SERVICE_NAME": "backend-service-e2e",
+                 "TASK_NAME": "backend-task-e2e"
+              }
+            }

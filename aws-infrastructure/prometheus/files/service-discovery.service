@@ -1,0 +1,12 @@
+[Unit]
+Description=Service Discovery Server
+After=cloud-final.service cloud-init.service cloud-config.service
+
+[Service]
+Type=simple
+ExecStart=/prometheus/bin/service-discovery.sh
+EnvironmentFile=/etc/environment
+User=cloud
+
+[Install]
+WantedBy=multi-user.target
