@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("backend/v1")
-class BackendController implements DeviceIdApi {
+@RequestMapping("device/v1")
+class DeviceController implements DeviceIdApi {
     @Override
     public ResponseEntity<Void> publishMeasurements(final String deviceId, final Measurement measurement) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

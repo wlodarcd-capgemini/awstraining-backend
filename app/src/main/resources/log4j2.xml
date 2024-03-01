@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Log4j configuration file for local deployment purpose only -->
-<Configuration>
-
-    <Properties>
-        <Property name="appID">TEST</Property>
-        <Property name="hub">CI</Property>
-        <Property name="environment">NONE</Property>
-        <Property name="logLevel">WARN</Property>
-    </Properties>
-
+<Configuration status="INFO">
     <Appenders>
-        <Console name="ConsoleAppender" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-6level %cdllAttributes %n"/>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
     </Appenders>
-
     <Loggers>
-        <AsyncLogger name="AsyncLogger" level="${logLevel}" additivity="false">
-            <AppenderRef ref="ConsoleAppender"/>
-        </AsyncLogger>
-        <AsyncRoot level="${logLevel}">
-            <AppenderRef ref="ConsoleAppender"/>
-        </AsyncRoot>
+        <Root level="info">
+            <AppenderRef ref="Console" />
+        </Root>
     </Loggers>
-
 </Configuration>
-
