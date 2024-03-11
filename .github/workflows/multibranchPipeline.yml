@@ -28,7 +28,7 @@ on:
 
 jobs:
   properties:
-    uses: Alegres/awstraining-backend/.github/workflows/datacenterMap.yml@master
+    uses: /.github/workflows/datacenterMap.yml@master
     with:
       hubEnv: BACKEND_EMEA_TEST
     secrets: inherit
