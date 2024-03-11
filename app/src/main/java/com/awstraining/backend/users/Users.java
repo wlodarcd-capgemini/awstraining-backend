@@ -1,4 +1,4 @@
-package com.awstraining.backend.business;
+package com.awstraining.backend.users;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -8,3 +8,12 @@ backend:
       - username: testUser
         password: $2a$10$uKw9ORqCF.qA3p6woHCgmeGW0jFuU9AstYhl61Uw8RTQ5AaZCfuru
         roles: USER
+  measurements:
+    ttlInSeconds: 2592000 # (in seconds) 30 days
+
+aws:
+  region: eu-central-1
+  dynamodb:
+    endpoint: http://localhost:8000
+    accessKey: dummyAccess
+    secretKey: dummySecret

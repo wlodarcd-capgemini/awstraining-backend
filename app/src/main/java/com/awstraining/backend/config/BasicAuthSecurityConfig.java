@@ -1,9 +1,9 @@
 package com.awstraining.backend.config;
 
-import static com.awstraining.backend.business.Users.USER;
+import static com.awstraining.backend.users.Users.USER;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-import com.awstraining.backend.business.Users;
+import com.awstraining.backend.users.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,12 +23,14 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 public class BasicAuthSecurityConfig {
-
+    private final Users users;
     /**
      * Contains configured users to be mapped
      */
     @Autowired
-    private Users users;
+    public BasicAuthSecurityConfig(final Users users) {
+        this.users = users;
+    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

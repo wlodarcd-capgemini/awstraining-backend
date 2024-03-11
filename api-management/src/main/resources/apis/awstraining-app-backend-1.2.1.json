@@ -137,8 +137,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "ok"
+          "201": {
+            "description": "Measurement published.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Measurement"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad request.",
@@ -202,7 +209,7 @@
         },
         "requestBody": {
           "description": "Measurement body",
-          "required": false,
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -346,7 +353,7 @@
       "Measurements": {
         "type": "object",
         "properties": {
-          "states": {
+          "measurements": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Measurement"
@@ -370,9 +377,9 @@
             "description": "Contains the timestamp when the measurement was taken"
           },
           "value": {
-            "type": "integer",
-            "format": "int64",
-            "example": 80,
+            "type": "number",
+            "format": "double",
+            "example": 80.12,
             "description": "Contains the value of the taken measurement"
           },
           "type": {
