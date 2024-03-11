@@ -23,7 +23,7 @@ on:
 
 jobs:
   properties:
-    uses: ./.github/workflows/datacenterMap.yml@master
+    uses: ./.github/workflows/datacenterMap.yml
     with:
       hubEnv: BACKEND_EMEA_TEST
     secrets: inherit
