@@ -86,14 +86,6 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d %T')"
 
-      - name: JUnits report
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          check_name: JUnits report ${{ steps.date.outputs.date }}
-          files: |
-            **/surefire-reports/TEST-*.xml
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
