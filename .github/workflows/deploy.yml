@@ -41,14 +41,14 @@ on:
 
 jobs:
   sourceProperties:
-    uses: Alegres/awstraining-backend/.github/workflows/datacenterMap.yml@master
+    uses: ./.github/workflows/datacenterMap.yml
     with:
       hubEnv: ${{ inputs.sourceHubEnv }}
     secrets: inherit
 
   destinationProperties:
     needs: sourceProperties
-    uses: Alegres/awstraining-backend/.github/workflows/datacenterMap.yml@master
+    uses: ./.github/workflows/datacenterMap.yml
     with:
       hubEnv: ${{ inputs.destinationHubEnv }}
     secrets: inherit
