@@ -17,7 +17,6 @@ WORKDIR ${HOME_DIR}
 
 ADD assembly-fargate/target/app.jar .
 ADD assembly-fargate/target/run.sh .
-ADD assembly-fargate/target/fetch_cdla_credentials.sh .
 ADD assembly-fargate/target/config config
 ADD assembly-fargate/target/fargate fargate
 
