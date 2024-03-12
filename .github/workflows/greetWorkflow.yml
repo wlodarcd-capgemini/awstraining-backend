@@ -15,4 +15,10 @@ jobs:
           - Sergio
     steps:
       - name: Greet
+        id: greet
         uses: Alegres/custom-hellow@v1
+        with:
+          name: ${{ matrix.name }}
+      - name: Print action call output
+        run: |
+          echo "Output random number: ${{ steps.greet.outputs.random-number }}"
