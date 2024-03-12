@@ -9,7 +9,7 @@ on:
         required: true
         type: "string"
       age:
-        description: "Provide your age"
+        description: "Provide your last name"
         required: true
         type: "number"
 jobs:
