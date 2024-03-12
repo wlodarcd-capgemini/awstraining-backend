@@ -1,4 +1,4 @@
-name: Hello world
+name: Greet workflow
 run-name: Greeting everyone
 
 on:
