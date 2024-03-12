@@ -33,7 +33,7 @@ jobs:
           length=${#last_name}
           echo "length=$length" >> $GITHUB_OUTPUT
     outputs:
-      last_name_length: steps.count_characters.length
+      last_name_length: ${{ steps.count_characters.outputs.length }}
 
   print_last_name_length:
     runs-on: ubuntu-latest
