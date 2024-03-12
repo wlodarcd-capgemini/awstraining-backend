@@ -8,10 +8,10 @@ on:
         description: "Provide your name"
         required: true
         type: "string"
-      age:
+      last_name:
         description: "Provide your last name"
         required: true
-        type: "number"
+        type: "string"
 jobs:
   print_hello_world:
     runs-on: ubuntu-latest
@@ -19,10 +19,28 @@ jobs:
       - name: Print name
         run: |
           echo "Hello ${{ inputs.name}}! Welcome in this step!"
-  print_age:
+          
+  print_last_name:
     runs-on: ubuntu-latest
     steps:
-      - name: Print age
+      - name: Print last name
         run: |
-          echo "Your age is ${{ inputs.age }}"
+          echo "Your last name is ${{ inputs.last_name }}"-
+      - id: count_characters
+        name: Count characters
+        run: |
+          last_name="${{ inputs.last_name }}"
+          length=${#last_name}
+          echo "length=$length" >> $GITHUB_OUTPUT
+    outputs:
+      last_name_length: steps.count_characters.length
+
+  print_last_name_length:
+    runs-on: ubuntu-latest
+    needs: print_last_name
+    steps:
+      - name: Print last name length
+        run: |
+          echo "Length of surname is ${{ needs.print_last_name.outputs.last_name_length }}"
+  
     
