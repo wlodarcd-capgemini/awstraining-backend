@@ -47,6 +47,19 @@ replay_pid*
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+.idea/compiler.xml
+.idea/codeStyleConfig.xml
+.idea/encodings.xml
+.idea/jarRepositories.xml
+.idea/jpa-buddy.xml
+.idea/misc.xml
+.idea/codeStyles/Project.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/**
+
+# Terraform Locks
+**.terraform.lock**
+
 
 # Gradle
 .idea/**/gradle.xml
