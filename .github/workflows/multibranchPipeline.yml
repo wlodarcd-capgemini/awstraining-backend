@@ -15,11 +15,6 @@ on:
         type: boolean
         required: false
         default: false
-      skipIntegrationTests:
-        description: Should skip integration tests?
-        type: boolean
-        required: false
-        default: false
 
 jobs:
   properties:
@@ -39,7 +34,6 @@ jobs:
       CLUSTER_NAME: ${{ needs.properties.outputs.CLUSTER_NAME }}
       SERVICE_NAME: ${{ needs.properties.outputs.SERVICE_NAME }}
       SKIP_SMOKE_TESTS: ${{ (github.event.inputs.skipSmokeTests != null && github.event.inputs.skipSmokeTests == 'true') || 'false' }}
-      SKIP_INTEGRATION_TESTS: ${{ (github.event.inputs.skipIntegrationTests != null && github.event.inputs.skipIntegrationTests == 'true') || 'false' }}
       SMOKETEST_BACKEND_PASSWORD: ${{ secrets.BACKEND_EMEA_TEST_SMOKETEST_BACKEND_PASSWORD }}
 
     steps:
@@ -120,29 +114,10 @@ jobs:
           cluster: ${{ env.CLUSTER_NAME }}
           wait-for-service-stability: true
 
-      # performTests:
-      - name: Clean up test report
-        if: always()
-        run: |
-          mvn clean
-
       - name: Run smoke tests
         if: ${{ env.SKIP_SMOKE_TESTS == 'false' }}
         run: |
           mvn -f pom.xml clean test -P st,BACKEND_EMEA_TEST
-
-      - name: Smoke tests report
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          check_name: Smoke tests report ${{ steps.date.outputs.date }}
-          files: |
-            **/surefire-reports/TEST-*.xml
-
-      - name: Clean up test report
-        if: always()
-        run: |
-          mvn clean
 
   pipelinePassed:
     runs-on: ubuntu-latest

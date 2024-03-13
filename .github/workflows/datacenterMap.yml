@@ -42,19 +42,19 @@ jobs:
               "BACKEND_EMEA_TEST": {
                  "HUB": "EMEA",
                  "STAGE": "TEST",
-                 "AWS_ACCOUNT": "851725340733",
+                 "AWS_ACCOUNT": "467331071075",
                  "REGION": "eu-central-1",
                  "CLUSTER_NAME": "backend-ecs-test",
-                 "SERVICE_NAME": "backend-service-test",
-                 "TASK_NAME": "backend-task-test"
+                 "SERVICE_NAME": "backend",
+                 "TASK_NAME": "backend"
               },
-              "BACKEND_EMEA_E2E": {
-                 "HUB": "EMEA",
-                 "STAGE": "E2E",
-                 "AWS_ACCOUNT": "851725340733",
-                 "REGION": "eu-central-1",
-                 "CLUSTER_NAME": "backend-ecs-e2e",
-                 "SERVICE_NAME": "backend-service-e2e",
-                 "TASK_NAME": "backend-task-e2e"
+              "BACKEND_US_TEST": {
+                 "HUB": "US",
+                 "STAGE": "TEST",
+                 "AWS_ACCOUNT": "467331071075",
+                 "REGION": "us-east-1",
+                 "CLUSTER_NAME": "backend-ecs-test",
+                 "SERVICE_NAME": "backend",
+                 "TASK_NAME": "backend"
               }
             }
