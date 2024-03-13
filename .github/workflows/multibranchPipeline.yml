@@ -15,11 +15,6 @@ on:
         type: boolean
         required: false
         default: false
-      skipIntegrationTests:
-        description: Should skip integration tests?
-        type: boolean
-        required: false
-        default: false
 
 jobs:
   properties:
@@ -39,7 +34,6 @@ jobs:
       CLUSTER_NAME: ${{ needs.properties.outputs.CLUSTER_NAME }}
       SERVICE_NAME: ${{ needs.properties.outputs.SERVICE_NAME }}
       SKIP_SMOKE_TESTS: ${{ (github.event.inputs.skipSmokeTests != null && github.event.inputs.skipSmokeTests == 'true') || 'false' }}
-      SKIP_INTEGRATION_TESTS: ${{ (github.event.inputs.skipIntegrationTests != null && github.event.inputs.skipIntegrationTests == 'true') || 'false' }}
       SMOKETEST_BACKEND_PASSWORD: ${{ secrets.BACKEND_EMEA_TEST_SMOKETEST_BACKEND_PASSWORD }}
 
     steps:
