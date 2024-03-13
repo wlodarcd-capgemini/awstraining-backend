@@ -2,17 +2,30 @@
 resource "aws_elasticsearch_domain" "elasticsearch_service_kibana" {
   domain_name           = "backend-domain"
   elasticsearch_version = "7.10"  # Update with your desired Elasticsearch version
-  instance_type         = "t2.small.elasticsearch"  # Update with your desired instance type
-  instance_count        = 1  # Update with the number of instances in the cluster
+
+  cluster_config {
+    instance_type         = "t2.small.elasticsearch"  # Update with your desired instance type
+    instance_count        = 1  # Update with the number of instances in the cluster
+  }
+
   ebs_options {
     ebs_enabled = true
     volume_size = 10  # Update with your desired EBS volume size in GB
     volume_type = "gp2"  # Update with your desired EBS volume type
   }
+
   vpc_options {
-    subnet_ids = var.subnets
+    subnet_ids = [ var.subnets[0] ]
     security_group_ids = var.security_groups
   }
+
+  tags = merge(
+      var.common_tags,
+      {
+        Name: "Backend Elasticsearch Domain",
+        Environment: var.environment
+      }
+    )
 }
 
 # Create a subscription filter for the log group

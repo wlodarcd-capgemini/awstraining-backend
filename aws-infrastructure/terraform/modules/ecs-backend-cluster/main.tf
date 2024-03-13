@@ -1,21 +1,48 @@
-resource "aws_lb" "backend_ecs_lb_internal" {
+resource "aws_security_group" "sg_lb_backend" {
+  description = "Controls access to backend load balancer"
+  vpc_id = var.aws_vpc_id
+  name = "sg_lb_backend"
+
+  ingress {
+    description = "Access to HTTP"
+    from_port = 80
+    protocol = "tcp"
+    to_port = 80
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = merge(
+    var.common_tags,
+    {
+      "Name" = "SG Load Balancer backend"
+    }
+  )
+}
+
+resource "aws_lb" "backend_ecs_lb" {
   name                       = "backend-lb"
-  internal                   = true
-  load_balancer_type         = "network"
-  enable_deletion_protection = false
+  internal                   = false
+  load_balancer_type         = "application"
   subnets = var.public_subnets_id
   tags = var.common_tags
+  security_groups = [ aws_security_group.sg_lb_backend.id ]
 }
 
 # Target Group for LoadBalancer
 resource "aws_lb_target_group" "backend_ecs_lb_target_group" {
   name                 = "backend-tg"
   port                 = 8081
-  protocol             = "TCP"
+  protocol             = "HTTP"
   target_type          = "ip"
   vpc_id               = var.aws_vpc_id
-  deregistration_delay = 30
-  connection_termination = true
 
   health_check {
     path     = "/actuator/health"
@@ -27,9 +54,9 @@ resource "aws_lb_target_group" "backend_ecs_lb_target_group" {
 
 # Listener for LoadBalancer on port 80
 resource "aws_lb_listener" "backend_ecs_lb_listener" {
-  load_balancer_arn = aws_lb.backend_ecs_lb_internal.arn
+  load_balancer_arn = aws_lb.backend_ecs_lb.arn
   port              = "80"
-  protocol          = "TCP"
+  protocol          = "HTTP"
 
   default_action {
     type             = "forward"
@@ -70,7 +97,7 @@ resource "aws_cloudwatch_metric_alarm" "backend_ecs_unhealthy_hosts" {
   treat_missing_data = "missing"
   dimensions         = {
     TargetGroup  = aws_lb_target_group.backend_ecs_lb_target_group.arn_suffix
-    LoadBalancer = aws_lb.backend_ecs_lb_internal.arn_suffix
+    LoadBalancer = aws_lb.backend_ecs_lb.arn_suffix
   }
   tags = var.common_tags
 }

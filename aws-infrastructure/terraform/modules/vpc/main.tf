@@ -15,6 +15,7 @@ resource "aws_vpc" "vpc" {
     }
   )
 }
+
 /*==== Subnets ======*/
 /* Internet gateway for the public subnet */
 resource "aws_internet_gateway" "ig" {

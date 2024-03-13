@@ -6,10 +6,6 @@ variable "profile" {
   description = "AWS profile name to use for the setup (e.g. ebc-e2e)"
 }
 
-variable "account_id" {
-  description = "AWS account id"
-}
-
 variable "log_group_name" {
   description = "CloudWatch log group name for ECS Fargate"
 }
@@ -25,3 +21,8 @@ variable "security_groups" {
 }
 
 variable "common_tags" {}
+
+variable "environment" {
+  description = "Environment"
+  type = string
+}
