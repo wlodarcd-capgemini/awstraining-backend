@@ -38,12 +38,12 @@ resource "aws_ecr_lifecycle_policy" "expire_images" {
         },
         {
             "rulePriority": 2,
-            "description": "Keep last 40 tagged images with prefix 'backend-cloud'",
+            "description": "Keep last 20 tagged images with prefix 'backend'",
             "selection": {
                 "tagStatus": "tagged",
-                "tagPrefixList": ["backend-cloud"],
+                "tagPrefixList": [ "${ var.name }" ],
                 "countType": "imageCountMoreThan",
-                "countNumber": 40
+                "countNumber": 20
             },
             "action": {
                 "type": "expire"

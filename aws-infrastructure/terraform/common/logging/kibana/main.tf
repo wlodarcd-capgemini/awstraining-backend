@@ -40,6 +40,16 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+data "terraform_remote_state" "ecs_backend_service" {
+  backend = "s3"
+  config = {
+    bucket = var.remote_state_bucket
+    dynamodb_table = "backend_tf_lock_remote_dynamo"
+    key = "ecs-backend-service.tfstate"
+    region = var.region
+  }
+}
+
 module "elasticsearch_service" {
   source     = "../../../modules/elasticsearch-service"
   common_tags = var.common_tags
@@ -49,4 +59,5 @@ module "elasticsearch_service" {
   security_groups = [ data.terraform_remote_state.securitygroups.outputs.sg_backend_id ]
   subnets = data.terraform_remote_state.vpc.outputs.private_subnets_id
   environment = var.environment
+  account_id = data.terraform_remote_state.globals.outputs.account_id
 }

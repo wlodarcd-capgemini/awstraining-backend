@@ -1,13 +1,7 @@
 #!/bin/sh
 
-echo "Downloading Configuration for Prometheus"
-/bin/sh /prometheus/bin/config-download.sh
-
 # Starting service-discovery in background
 /prometheus/bin/service-discovery.sh &
-
-# Starting reload-cycle in background
-/prometheus/bin/reload-cycle.sh &
 
 echo "Starting Prometheus"
 /prometheus/bin/prometheus \

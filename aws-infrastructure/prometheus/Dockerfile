@@ -2,7 +2,7 @@ FROM        amazonlinux:2023.0.20230614.0
 
 EXPOSE      9090
 
-RUN         yum install -y aws-cli && yum install -y tar && yum install -y gzip && yum install -y procps && yum install -y wget
+RUN         yum install -y tar && yum install -y gzip && yum install -y procps && yum install -y wget
 
 RUN         mkdir -p /tmp/prometheus
 RUN         wget -O /tmp/prometheus/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.18.1/prometheus-2.18.1.linux-amd64.tar.gz
@@ -12,13 +12,11 @@ RUN         chmod +x /prometheus/bin/service-discovery
 
 COPY        scripts/setup.sh               /tmp/prometheus
 COPY        scripts/prometheus.sh          /prometheus/bin/prometheus.sh
-COPY        scripts/config-download.sh     /prometheus/bin/config-download.sh
-COPY        scripts/reload-cycle.sh        /prometheus/bin/reload-cycle.sh
 COPY        scripts/service-discovery.sh   /prometheus/bin/service-discovery.sh
-
+COPY        prometheus.yml                 /prometheus/config/prometheus.yml
 
 RUN chmod +x /tmp/prometheus/setup.sh &&\
-    chmod +x /prometheus/bin/* &&\
+    chmod +x /prometheus/bin/*.sh &&\
     /tmp/prometheus/setup.sh &&\
     chown -R 1000:1000 /prometheus
 

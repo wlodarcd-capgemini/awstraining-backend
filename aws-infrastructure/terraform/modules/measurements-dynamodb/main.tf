@@ -1,4 +1,4 @@
-resource "aws_dynamodb_table" "dynamodb_terraform_state_lock" {
+resource "aws_dynamodb_table" "dynamodb_measurements" {
   name = var.table_name
   hash_key = "deviceId"
   range_key = "creationTime"
