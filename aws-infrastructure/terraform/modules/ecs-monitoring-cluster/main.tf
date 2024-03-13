@@ -95,7 +95,7 @@ resource "aws_lb_target_group" "kibana_target_group" {
   deregistration_delay = 30
 
   health_check {
-    path                = "/app/kibana"
+    path                = "/status"
     protocol            = "HTTP"
   }
 

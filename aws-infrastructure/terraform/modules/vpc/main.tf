@@ -111,3 +111,18 @@ resource "aws_vpc_endpoint" "s3" {
     }
   )
 }
+
+resource "aws_vpc_endpoint" "dynamodb" {
+  vpc_id            = aws_vpc.vpc.id
+  service_name      = "com.amazonaws.${var.region}.dynamodb"
+  route_table_ids   = [ aws_route_table.private.id ]
+  vpc_endpoint_type = "Gateway"
+
+  tags = merge(
+    var.common_tags,
+    {
+      Name        = "${var.environment}-dynamodb-gateway-endpoint"
+      Environment = var.environment
+    }
+  )
+}

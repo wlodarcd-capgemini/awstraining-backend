@@ -44,6 +44,12 @@ resource "aws_iam_role_policy_attachment" "ecs_task_role_attach" {
   policy_arn = aws_iam_policy.subscription_filter_lambda_policy.arn
 }
 
+resource "aws_cloudwatch_log_group" "lambda_elasticsearch_log_group" {
+  name = "/aws/lambda/LogsToElasticsearch_backend-domain"
+  retention_in_days = 30
+  tags = var.common_tags
+}
+
 data "archive_file" "elasticsearch_log_lambda_zip" {
   type        = "zip"
   source_file = "${path.module}/lambda/src/index.js"
