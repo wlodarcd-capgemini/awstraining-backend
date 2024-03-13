@@ -10,12 +10,12 @@ if [ "$#" -lt 5 ]; then
   echo
   echo "example usage: "
   echo
-  echo "$0 w2.sh backend-test eu-central-1 emea plan"
+  echo "$0 setup_new_region.sh backend-test eu-central-1 emea plan"
   echo
   echo "or: "
   echo
-  echo "$0 w2.sh backend-test eu-central-1 emea apply"
-  echo "$0 w2.sh backend-test eu-central-1 emea apply -auto-approve"
+  echo "$0 setup_new_region.sh backend-test eu-central-1 emea apply"
+  echo "$0 setup_new_region.sh backend-test eu-central-1 emea apply -auto-approve"
   echo
   echo "Apply will ask for your confirmation after each module."
   exit 1
@@ -30,15 +30,27 @@ REGION=$3
 HUB=$4
 ACTION=$5
 
-./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
-./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
-./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
-./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
-./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
-./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
-./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
-./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/vpc-endpoints apply #except test
-./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
-./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
-./$SCRIPT $PROFILE $REGION common/services/ecs-prometheus-cluster $ACTION
-./$SCRIPT $PROFILE $REGION common/services/ecs-prometheus-service $ACTION
+
+if [ "$ACTION" = "destroy" ]; then
+  ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
+  ./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
+  ./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
+  ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
+  ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
+  ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
+  ./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
+else
+  ./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
+  ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
+  ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
+  ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
+  ./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
+  ./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
+fi

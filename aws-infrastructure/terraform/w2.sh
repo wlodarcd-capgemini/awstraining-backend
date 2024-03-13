@@ -137,9 +137,9 @@ check_properties "$target_path" "$region" "$profile"
 check_tfstate_with_profile
 check_path_override
 
-# Check if TECHNICAL_USER is not empty
-if [ -n "$TECHNICAL_USER" ]; then
-    suffix="-${TECHNICAL_USER}"
+# Check if RANDOM_STRING is not empty
+if [ -n "$RANDOM_STRING" ]; then
+    suffix="-${RANDOM_STRING}"
 else
     suffix=""
 fi
