@@ -1,0 +1,21 @@
+{
+  "Statement": [
+    {
+      "Action": [
+        "sts:AssumeRole",
+        "sts:TagSession"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:iam::859302970975:role/aws-github-backend-role-eu-central-1",
+        "arn:aws:iam::842941045954:role/aws-github-backend-role-eu-central-1",
+        "arn:aws:iam::847940415971:role/aws-github-backend-role-eu-central-1",
+        "arn:aws:iam::842941045954:role/aws-github-backend-role-us-east-1",
+        "arn:aws:iam::847940415971:role/aws-github-backend-role-us-east-1",
+        "arn:aws:iam::842941045954:role/aws-github-backend-role-ap-northeast-2",
+        "arn:aws:iam::847940415971:role/aws-github-backend-role-ap-northeast-2"
+      ]
+    }
+  ],
+  "Version": "2012-10-17"
+}
