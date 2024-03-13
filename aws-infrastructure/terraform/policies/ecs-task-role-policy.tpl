@@ -21,6 +21,11 @@ ${jsonencode(
       "Resource": secrets_manager_resources
     },
     {
+      "Action": "dynamodb:*",
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
       "Effect": "Allow",
       "Action": "ssm:GetParametersByPath",
       "Resource": [

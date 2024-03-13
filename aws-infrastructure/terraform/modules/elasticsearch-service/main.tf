@@ -39,9 +39,14 @@ resource "aws_iam_policy" "subscription_filter_lambda_policy" {
   policy = file("../../../policies/lambda-write-to-elasticsearch.json")
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_task_role_attach" {
+resource "aws_iam_role_policy_attachment" "subscription_filter_lambda_role_attach" {
   role = aws_iam_role.subscription_filter_lambda_role.name
   policy_arn = aws_iam_policy.subscription_filter_lambda_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "subscription_filter_lambda_role_basic_attach" {
+role = aws_iam_role.subscription_filter_lambda_role.name
+policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_cloudwatch_log_group" "lambda_elasticsearch_log_group" {
