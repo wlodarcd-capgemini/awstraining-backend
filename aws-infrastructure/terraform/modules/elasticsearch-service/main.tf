@@ -70,6 +70,11 @@ resource "aws_lambda_function" "lambda_logs" {
   source_code_hash = data.archive_file.elasticsearch_log_lambda_zip.output_base64sha256
   timeout       = 300
 
+  vpc_config {
+    security_group_ids = [ var.security_groups ]
+    subnet_ids         = [ var.subnets ]
+  }
+
   environment {
     variables = {
       myProject_elasticsearch_endpoint = aws_elasticsearch_domain.elasticsearch_service_kibana.endpoint
