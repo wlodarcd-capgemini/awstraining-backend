@@ -95,3 +95,18 @@ resource "aws_route_table_association" "private" {
   subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
   route_table_id = aws_route_table.private.id
 }
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.vpc.id
+  service_name      = "com.amazonaws.${var.region}.s3"
+  route_table_ids   = [ aws_route_table.private.id ]
+  vpc_endpoint_type = "Gateway"
+
+  tags = merge(
+    var.common_tags,
+    {
+      Name        = "${var.environment}-s3-gateway-endpoint"
+      Environment = var.environment
+    }
+  )
+}

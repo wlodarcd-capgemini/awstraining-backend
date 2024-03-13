@@ -26,6 +26,7 @@ module "vpc" {
   availability_zones = data.terraform_remote_state.globals.outputs.availability_zones
   environment        = var.environment
   common_tags = var.common_tags
+  region = var.region
 }
 
 
