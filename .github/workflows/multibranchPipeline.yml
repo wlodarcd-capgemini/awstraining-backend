@@ -120,29 +120,10 @@ jobs:
           cluster: ${{ env.CLUSTER_NAME }}
           wait-for-service-stability: true
 
-      # performTests:
-      - name: Clean up test report
-        if: always()
-        run: |
-          mvn clean
-
       - name: Run smoke tests
         if: ${{ env.SKIP_SMOKE_TESTS == 'false' }}
         run: |
           mvn -f pom.xml clean test -P st,BACKEND_EMEA_TEST
-
-      - name: Smoke tests report
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          check_name: Smoke tests report ${{ steps.date.outputs.date }}
-          files: |
-            **/surefire-reports/TEST-*.xml
-
-      - name: Clean up test report
-        if: always()
-        run: |
-          mvn clean
 
   pipelinePassed:
     runs-on: ubuntu-latest
