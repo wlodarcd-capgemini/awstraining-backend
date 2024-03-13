@@ -17,7 +17,7 @@
 
     <Loggers>
         <Root level="${logLevel}">
-            <AppenderRef ref="console" />
+            <AppenderRef ref="Console" />
         </Root>
     </Loggers>
 
