@@ -102,8 +102,9 @@ User is **testUser** and password is **welt**.
 # Destroying AWS infrastructure
 Stop all running tasks.
 
-Delete images from AWS ECR and delete secrets from AWS Secret Manager
-Run a script to destroy a new AWS environment (still in ```/aws-infrastructure/terraform``` directory):
+Delete images from AWS ECR and delete secrets from AWS Secret Manager.
+
+Run a script to destroy a new AWS environment (in ```/aws-infrastructure/terraform``` directory):
 ```
 ./setup_new_region.sh backend-test eu-central-1 emea destroy -auto-approve
 ```
