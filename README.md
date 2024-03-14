@@ -62,6 +62,8 @@ Now you can run a script to set up a new AWS environment (still in ```/aws-infra
 ```
 
 Terraform should automatically approve all changes and create all required resources one-by-one.
+In case of errors, please correct them, delete from setup_new_region.sh lines that has already been executed and run 
+the script again.
 
 Then you should go to **GitHub -> Your fork repo -> Settings -> Secrets and variables**
 and create two repository secrets:
@@ -96,3 +98,18 @@ curl --location 'http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/devi
 ```
 
 User is **testUser** and password is **welt**.
+
+# Destroying AWS infrastructure
+Stop all running tasks.
+
+Delete images from AWS ECR and delete secrets from AWS Secret Manager
+Run a script to destroy a new AWS environment (still in ```/aws-infrastructure/terraform``` directory):
+```
+./setup_new_region.sh backend-test eu-central-1 emea destroy -auto-approve
+```
+
+Terraform should automatically approve all changes and delete all existing resources one-by-one.
+In case of errors, please correct them, delete from setup_new_region.sh lines that has already been executed and run 
+the script again.
+
+Check IAM, Cloudwatch Logs, S3 buckets if everything was deleted
