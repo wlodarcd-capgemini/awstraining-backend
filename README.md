@@ -15,18 +15,20 @@ aws:
     secretKey: dummySecret
 ```
 
-# Deploying AWS infrastructure
+# Preparation to the deployment
 To deploy infrastructure to your sandbox account please first fork our base repository.
 To do it, go to:
 * https://github.com/Alegres/awstraining-backend
 
 and click on Fork button and then (+) Create new fork.
 
-After forking repository to your account, please search for all occurrences of:
+After forking repository to your account, please clone it to your local machine and search for all occurrences of:
 * 467331071075
 
 This is base AWS account id that we use for the base repository.
 You must replace this with your own account id in all files.
+
+Push changes to your remote repository.
 
 Then you should create a new profile in ```C:\Users\YOURUSER\.aws\credentials``` and set credentials to your account:
 ```
@@ -47,6 +49,12 @@ RANDOM_STRING="dakj18akj91"
 This random string should be some random value. It is important to come up with an unique value, as this will affect 
 the name of the Terraform state bucket that will be created, thus it must be unique globally.
 Please also do not make it too long.
+
+Please again push changes to your remote repository.
+
+# Deploying AWS infrastructure
+To run Terraform you first need to install it on your local machine.
+You need **terraform_1.4.6** or higher version.
 
 Now you can run a script to set up a new AWS environment (still in ```/aws-infrastructure/terraform``` directory):
 ```
