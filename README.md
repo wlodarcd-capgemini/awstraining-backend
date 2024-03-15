@@ -43,7 +43,7 @@ and generate credentials for this non-root user.
 Then please run bash (e.g. Git Bash), and go to ```/aws-infrastructure/terraform``` directory.
 Set the following environmental variable:
 ```
-RANDOM_STRING="dakj18akj91"
+export RANDOM_STRING="dakj18aad88"
 ```
 
 This random string should be some random value. It is important to come up with an unique value, as this will affect 
@@ -58,7 +58,7 @@ You need **terraform_1.4.6** or higher version.
 
 Now you can run a script to set up a new AWS environment (still in ```/aws-infrastructure/terraform``` directory):
 ```
-./setup_new_region.sh backend-test eu-central-1 emea apply -auto-approve
+./setup_new_region.sh w2.sh backend-test eu-central-1 emea apply -auto-approve
 ```
 
 Terraform should automatically approve all changes and create all required resources one-by-one.
