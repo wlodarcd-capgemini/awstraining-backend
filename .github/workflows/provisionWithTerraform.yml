@@ -19,7 +19,7 @@ jobs:
       hubEnv: ${{ inputs.hubEnv }}
     secrets: inherit
 
-  buildTestDeploy:
+  terraform:
     runs-on: ubuntu-latest
     needs: properties
     env:

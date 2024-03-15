@@ -161,9 +161,9 @@ tf_file_name="$(basename ${target_path})"
 state_path="${tf_file_name}.tfstate"
 
 terraform get
-terraform init -backend-config "bucket=${TF_VAR_remote_state_bucket}" -backend-config "key=${state_path}" -backend-config "region=${region}" -backend-config "profile=${profile}" -var environment=${environment} -var profile=${profile} -var remote_state_bucket=${TF_VAR_remote_state_bucket} -var region=${region} -var shared_credentials_file="${shared_credentials_file}" -lock=true
+terraform init -backend-config "bucket=${TF_VAR_remote_state_bucket}" -backend-config "key=${state_path}" -backend-config "region=${region}" -backend-config "profile=default" -var environment=${environment} -var profile=default -var remote_state_bucket=${TF_VAR_remote_state_bucket} -var region=${region} -var shared_credentials_file="${shared_credentials_file}" -lock=true
 if [ "$command" != "init" ]
 then
   echo "Running terraform command: $command"
-  terraform ${command} -var remote_state_bucket=${TF_VAR_remote_state_bucket} -var region=${region} -var environment=${environment} -var profile=${profile} -var shared_credentials_file=${shared_credentials_file} ${options}
+  terraform ${command} -var remote_state_bucket=${TF_VAR_remote_state_bucket} -var region=${region} -var environment=${environment} -var profile=default -var shared_credentials_file=${shared_credentials_file} ${options}
 fi
