@@ -30,9 +30,10 @@ REGION=$3
 HUB=$4
 ACTION=${@:5}
 
-if [ "$ACTION" = "destroy" ]; then
+if [ "$ACTION" = "destroy -auto-approve" ]; then
   ./$SCRIPT $PROFILE $REGION common/monitoring/ecs-monitoring-service $ACTION
   ./$SCRIPT $PROFILE $REGION common/monitoring/ecs-monitoring-cluster $ACTION
+  ./$SCRIPT $PROFILE $REGION common/logging/kibana $ACTION
   ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
   ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
   ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
