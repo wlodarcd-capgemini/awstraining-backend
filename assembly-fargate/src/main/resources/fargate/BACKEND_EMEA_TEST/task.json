@@ -58,7 +58,9 @@
     }
   ],
   "taskRoleArn": "arn:aws:iam::513741763509:role/backend-ecs-task-role-eu-central-1",
-  "requiresCompatibilities": ["FARGATE"],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
   "networkMode": "awsvpc",
   "memory": "2048",
   "cpu": "1024"

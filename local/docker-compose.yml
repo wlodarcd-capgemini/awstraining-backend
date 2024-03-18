@@ -53,6 +53,23 @@ services:
       - dynamodb
     restart: on-failure
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - "./assembly-local/prometheus.yml:/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - "./assembly-local/grafana/grafana.ini:/etc/grafana/grafana.ini"
+      - "./assembly-local/grafana/provisioning:/etc/grafana/provisioning"
+      - "./assembly-local/grafana/dashboards:/var/lib/grafana/dashboards"
+    ports:
+      - "3003:3003"
+
 volumes:
   app_dynamodb:
     driver: local

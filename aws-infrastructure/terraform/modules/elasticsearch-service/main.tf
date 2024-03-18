@@ -71,8 +71,8 @@ resource "aws_lambda_function" "lambda_logs" {
   timeout       = 300
 
   vpc_config {
-    security_group_ids = [ var.security_groups ]
-    subnet_ids         = [ var.subnets ]
+    security_group_ids = var.security_groups
+    subnet_ids         = var.subnets
   }
 
   environment {

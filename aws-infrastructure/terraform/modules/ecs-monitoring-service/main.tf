@@ -47,11 +47,11 @@ resource "aws_ecs_service" "ecs_monitoring_service" {
     assign_public_ip = false
   }
 
-  load_balancer {
-    target_group_arn = var.kibana_target_group_arn
-    container_name = "kibana"
-    container_port = 5601
-  }
+//  load_balancer {
+//    target_group_arn = var.kibana_target_group_arn
+//    container_name = "kibana"
+//    container_port = 5601
+//  }
 
   load_balancer {
     target_group_arn = var.prometheus_target_group_arn
@@ -59,11 +59,11 @@ resource "aws_ecs_service" "ecs_monitoring_service" {
     container_port = 9090
   }
 
-  load_balancer {
-    target_group_arn = var.grafana_target_group_arn
-    container_name = "grafana"
-    container_port = 3000
-  }
+//  load_balancer {
+//    target_group_arn = var.grafana_target_group_arn
+//    container_name = "grafana"
+//    container_port = 3000
+//  }
 
   tags = var.common_tags
 }

@@ -20,7 +20,7 @@ data "terraform_remote_state" "globals" {
   }
 }
 
-data "terraform_remote_state" "securitygroups" {
+data "terraform_remote_state" "security_groups" {
   backend = "s3"
   config = {
     bucket = var.remote_state_bucket
@@ -56,7 +56,7 @@ module "elasticsearch_service" {
   log_group_name = "/ecs/backend"
   profile = var.profile
   region = var.region
-  security_groups = [ data.terraform_remote_state.securitygroups.outputs.sg_backend_id ]
+  security_groups = [ data.terraform_remote_state.security_groups.outputs.sg_backend_id ]
   subnets = data.terraform_remote_state.vpc.outputs.private_subnets_id
   environment = var.environment
   account_id = data.terraform_remote_state.globals.outputs.account_id
