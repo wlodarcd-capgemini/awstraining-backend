@@ -23,7 +23,7 @@ To do it, go to:
 and click on Fork button and then (+) Create new fork.
 
 After forking repository to your account, please clone it to your local machine and search for all occurrences of:
-* 467331071075
+* 339713116995
 
 This is base AWS account id that we use for the base repository.
 You must replace this with your own account id in all files.
@@ -43,7 +43,7 @@ and generate credentials for this non-root user.
 Then please run bash (e.g. Git Bash), and go to ```/aws-infrastructure/terraform``` directory.
 Set the following environmental variable:
 ```
-RANDOM_STRING="dakj18akj91"
+export RANDOM_STRING="dakj18aad88"
 ```
 
 This random string should be some random value. It is important to come up with an unique value, as this will affect 

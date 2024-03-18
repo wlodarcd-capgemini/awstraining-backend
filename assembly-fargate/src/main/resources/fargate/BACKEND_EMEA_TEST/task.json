@@ -11,11 +11,7 @@
           "awslogs-stream-prefix": "ecs"
         }
       },
-      "entryPoint": [
-        "sh",
-        "-c",
-        "/backend/run.sh"
-      ],
+      "entryPoint": ["sh", "-c", "/backend/run.sh"],
       "workingDirectory": "/backend",
       "portMappings": [
         {
