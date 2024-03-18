@@ -8,7 +8,6 @@ resource "aws_kms_key" "aws_backend_sns_key" {
   description = "Policy used to allow SNS to write logs to CloudWatch Logs"
   policy = templatefile("../../../policies/sns-kms-policy.tpl", {
     account_id = var.account_id
-    region = var.region
   })
 
   tags = var.common_tags
