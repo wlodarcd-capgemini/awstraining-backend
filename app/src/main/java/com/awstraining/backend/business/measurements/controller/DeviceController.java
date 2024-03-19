@@ -30,12 +30,14 @@ class DeviceController implements DeviceIdApi {
 
     @Override
     public ResponseEntity<Measurement> publishMeasurements(final String deviceId, final Measurement measurement) {
+        LOGGER.info("Publishing measurement for device '{}'", deviceId);
         final MeasurementDO measurementDO = fromMeasurement(deviceId, measurement);
         service.saveMeasurement(measurementDO);
         return ResponseEntity.ok(measurement);
     }
     @Override
     public ResponseEntity<Measurements> retrieveMeasurements(final String deviceId) {
+        LOGGER.info("Retrieving all measurements for device '{}'", deviceId);
         final List<Measurement> measurements = service.getMeasurements()
                 .stream()
                 .map(this::toMeasurement)
