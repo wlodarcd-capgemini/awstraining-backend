@@ -67,15 +67,14 @@ aws_secret_access_key = YOU_SECRET_ACCESS_KEY
 **DO NOT USER ROOT USER CREDENTIALS!** Instead, create admin user in IAM, assign him **AdministratorAccess** policy
 and generate credentials for this non-root user.
 
-Then please run bash (e.g. Git Bash), and go to ```/aws-infrastructure/terraform``` directory.
-Set the following environmental variable:
+Then please run bash (e.g. Git Bash), and go to . ``/aws-infrastructure/terraform``` directory.
+Set 'RANDOM_STRING' environmental variable. This random string should be some random value. It is important to come up 
+with an unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must 
+be unique globally. Please also do not make it too long.
+Here is example
 ```
 export RANDOM_STRING="dakj18aad88"
 ```
-
-This random string should be some random value. It is important to come up with an unique value, as this will affect 
-the name of the Terraform state bucket that will be created, thus it must be unique globally.
-Please also do not make it too long.
 
 Please again push changes to your remote repository.
 
@@ -98,6 +97,10 @@ and create two repository secrets:
 * BACKEND_EMEA_TEST_AWS_SECRET
 
 and set accordingly **AWS_KEY** and **AWS_SECRET**, same as in ```..\.aws\credentials```.
+
+It is all what we have to do for secrets in GitHub.
+
+Now go to AWS Secret Manager, copy arn of created Secret and adjust it in your code. Then enter some dummy values for created Secret.
 
 # Build & Deploy
 When you are done with setting up the infrastructure, please go to your fork repository, open **Actions** tab and run
