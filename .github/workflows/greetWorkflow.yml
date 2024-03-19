@@ -22,3 +22,4 @@ jobs:
       - name: Print action call output
         run: |
           echo "Output random number: ${{ steps.greet.outputs.random-number }}"
+
