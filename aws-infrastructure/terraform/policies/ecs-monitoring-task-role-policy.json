@@ -17,7 +17,9 @@
         "ecs:DescribeServices",
         "ecs:DescribeContainerInstances",
         "ecs:DescribeTaskSets",
-        "ecs:DescribeTaskDefinition"
+        "ecs:DescribeTaskDefinition",
+        "logs:FilterLogEvents",
+        "cloudwatchlogs:DescribeLogGroups"
       ],
       "Effect": "Allow",
       "Resource": "*"
