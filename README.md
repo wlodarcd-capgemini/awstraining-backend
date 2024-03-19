@@ -50,7 +50,7 @@ To do it, go to:
 and click on Fork button and then (+) Create new fork.
 
 After forking repository to your account, please clone it to your local machine and search for all occurrences of:
-* 339713116995
+* <<ACCOUNT_ID>>
 
 This is base AWS account id that we use for the base repository.
 You must replace this with your own account id in all files.
