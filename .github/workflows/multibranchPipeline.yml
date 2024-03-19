@@ -119,6 +119,8 @@ jobs:
         run: |
           mvn -f pom.xml clean test -P st,BACKEND_EMEA_TEST
 
+
+
   pipelinePassed:
     runs-on: ubuntu-latest
     needs: buildTestDeploy
