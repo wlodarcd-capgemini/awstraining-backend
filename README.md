@@ -71,7 +71,9 @@ and create two repository secrets:
 
 and set accordingly **AWS_KEY** and **AWS_SECRET**, same as in ```..\.aws\credentials```.
 
-Go to Secret Manager, copy arn of created Secret and adjust it in your code. Then enter some dummy values for created Secret.
+It is all what we have to do for secrets in GitHub.
+
+Now go to AWS Secret Manager, copy arn of created Secret and adjust it in your code. Then enter some dummy values for created Secret.
 
 # Build & Deploy
 When you are done with setting up the infrastructure, please go to your fork repository, open **Actions** tab and run
