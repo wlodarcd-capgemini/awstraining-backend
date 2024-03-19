@@ -9,8 +9,7 @@ on:
         required: true
         type: choice
         options:
-          - 'BACKEND_EMEA_TEST'
-
+          - "BACKEND_EMEA_TEST"
 
 jobs:
   properties:
@@ -24,10 +23,10 @@ jobs:
     needs: properties
     env:
       AWS_ACCOUNT: ${{ needs.properties.outputs.AWS_ACCOUNT }}
-      AWS_KEY:  ${{ secrets.BACKEND_EMEA_TEST_AWS_KEY }}
+      AWS_KEY: ${{ secrets.BACKEND_EMEA_TEST_AWS_KEY }}
       AWS_SECRET: ${{ secrets.BACKEND_EMEA_TEST_AWS_SECRET }}
       REGION: ${{ needs.properties.outputs.REGION }}
-      RANDOM_STRING: "dakj18aad88"
+      RANDOM_STRING: "mbusstringrandom222"
 
     steps:
       - name: Checkout
