@@ -68,13 +68,15 @@ aws_secret_access_key = YOU_SECRET_ACCESS_KEY
 and generate credentials for this non-root user.
 
 Then please run bash (e.g. Git Bash), and go to . ``/aws-infrastructure/terraform``` directory.
-Set 'RANDOM_STRING' environmental variable. This random string should be some random value. It is important to come up 
-with an unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must 
+Set 'UNIQUE_BUCKET_STRING' environmental variable. This string should be some unique value. It is important to come up 
+with a unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must 
 be unique globally. Please also do not make it too long.
 Here is example
 ```
-export RANDOM_STRING="dakj18aad88"
+export UNIQUE_BUCKET_STRING="dakj18aad88"
 ```
+
+You should also set this environmental variable in ```provisionWithTerraform.yml``` workflow.
 
 Please again push changes to your remote repository.
 
