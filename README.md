@@ -138,7 +138,7 @@ curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
 
 ```
 curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
---header 'Content-Type: application/json' \
+-H 'Content-Type: application/json' \
 -u userEMEATest:welt \
 --data '{
     "type": "testing",
