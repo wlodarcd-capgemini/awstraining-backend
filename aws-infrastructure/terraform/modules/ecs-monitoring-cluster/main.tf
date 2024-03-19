@@ -69,7 +69,7 @@ resource "aws_lb" "monitoring_lb" {
   name = "monitoring-lb"
   internal = false
   load_balancer_type = "network"
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   subnets = var.subnets
   tags = var.common_tags

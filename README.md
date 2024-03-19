@@ -67,8 +67,8 @@ aws_secret_access_key = YOU_SECRET_ACCESS_KEY
 **DO NOT USER ROOT USER CREDENTIALS!** Instead, create admin user in IAM, assign him **AdministratorAccess** policy
 and generate credentials for this non-root user.
 
-Then please run bash (e.g. Git Bash), and go to . ``/aws-infrastructure/terraform``` directory.
-Set 'UNIQUE_BUCKET_STRING' environmental variable. This string should be some unique value. It is important to come up 
+Then please run bash (e.g. Git Bash), and go to ```aws-infrastructure/terraform``` directory.
+Set **UNIQUE_BUCKET_STRING** environmental variable. This string should be some unique value. It is important to come up 
 with a unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must 
 be unique globally. Please also do not make it too long.
 Here is example
@@ -80,31 +80,48 @@ You should also set this environmental variable in ```provisionWithTerraform.yml
 
 Please again push changes to your remote repository.
 
-# Deploying AWS infrastructure
-To run Terraform you first need to install it on your local machine.
-You need **terraform_1.4.6** or higher version.
-
-Now you can run a script to set up a new AWS environment (still in ```/aws-infrastructure/terraform``` directory):
-```
-./setup_new_region.sh w2.sh backend-test eu-central-1 emea apply -auto-approve
-```
-
-Terraform should automatically approve all changes and create all required resources one-by-one.
-In case of errors, please correct them, delete from setup_new_region.sh lines that has already been executed and run 
-the script again.
-
-Then you should go to **GitHub -> Your fork repo -> Settings -> Secrets and variables**
+# Deploying AWS infrastructure (GitHub)
+## Setting AWS credentials in GitHub
+First you should go to **GitHub -> Your fork repo -> Settings -> Secrets and variables**
 and create two repository secrets:
 * BACKEND_EMEA_TEST_AWS_KEY
 * BACKEND_EMEA_TEST_AWS_SECRET
 
 and set accordingly **AWS_KEY** and **AWS_SECRET**, same as in ```..\.aws\credentials```.
 
-It is all what we have to do for secrets in GitHub.
+## Running provisioning workflow
+Then, you should run ```provisionWithTerraform``` pipeline under **Actions** tab.
+This will automatically provision AWS infrastructure.
 
-Now go to AWS Secret Manager, copy arn of created Secret and adjust it in your code. Then enter some dummy values for created Secret.
+## Configuring secrets
+Then go to AWS Secret Manager, copy ARN of created Secret and adjust it in task definition for the region that you are deploying.
+Look for:
+```
+<<TODO: set ARN of secrets manager>>
+```
 
-# Build & Deploy
+Then, please go to AWS Secrets Manager, open your secrets and edit JSON string.
+You should add the following secrets that will create users for basic auth:
+```json
+{
+  "backend": {
+    "security": {
+      "users": [
+        {
+          "username": "userEMEATest",
+          "password": "$2a$10$uKw9ORqCF.qA3p6woHCgmeGW0jFuU9AstYhl61Uw8RTQ5AaZCfuru",
+          "roles": "USER"
+        }
+      ]
+    }
+  }
+}
+```
+
+Spring will automatically load this JSON to the Spring container and user **userEMEATest** with password **welt** will be
+available for basic auth during application execution in EMEA TEST environment.
+
+## Build & Deploy to Fargate
 When you are done with setting up the infrastructure, please go to your fork repository, open **Actions** tab and run
 **Multibranch pipeline** on the main branch.
 
@@ -115,14 +132,14 @@ backend application load balancer.
 Please then copy DNS of this load balancer and feel free to run test curls.
 Example:
 ```
-curl --location 'http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test' \
---header 'Authorization: Basic dGVzdFVzZXI6d2VsdA=='
+curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
+-u userEMEATest:welt
 ```
 
 ```
-curl --location 'http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test' \
+curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic dGVzdFVzZXI6d2VsdA==' \
+-u userEMEATest:welt \
 --data '{
     "type": "testing",
     "value": -510.190
@@ -131,18 +148,31 @@ curl --location 'http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/devi
 
 User is **testUser** and password is **welt**.
 
-# Destroying AWS infrastructure
+# Deploying AWS infrastructure (locally)
+To run Terraform you first need to install it on your local machine.
+You need **terraform_1.4.6** or higher version.
+
+Now you can run a script to set up a new AWS environment (still in ```/aws-infrastructure/terraform``` directory):
+```
+./setup_new_region.sh w2.sh backend-test eu-central-1 emea apply -auto-approve
+```
+
+Terraform should automatically approve all changes and create all required resources one-by-one.
+In case of errors, please correct them, delete from setup_new_region.sh lines that has already been executed and run
+the script again.
+
+# Destroying AWS infrastructure (locally)
 Stop all running tasks.
 
 Delete images from AWS ECR and delete secrets from AWS Secret Manager.
 
 Run a script to destroy a new AWS environment (in ```/aws-infrastructure/terraform``` directory):
 ```
-./setup_new_region.sh backend-test eu-central-1 emea destroy -auto-approve
+./setup_new_region.sh w2.sh backend-test eu-central-1 emea destroy -auto-approve
 ```
 
 Terraform should automatically approve all changes and delete all existing resources one-by-one.
-In case of errors, please correct them, delete from setup_new_region.sh lines that has already been executed and run 
+In case of errors, please correct them, delete from setup_new_region.sh lines that has already been executed and run
 the script again.
 
-Check IAM, Cloudwatch Logs, S3 buckets if everything was deleted
+Check IAM, Cloudwatch Logs, S3 buckets if everything was deleted.
