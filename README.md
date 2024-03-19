@@ -93,8 +93,8 @@ and set accordingly **AWS_KEY** and **AWS_SECRET**, same as in ```..\.aws\creden
 Then, you should run ```provisionWithTerraform``` pipeline under **Actions** tab.
 This will automatically provision AWS infrastructure.
 
-## Configuring secrets
-Then go to AWS Secret Manager, copy ARN of created Secret and adjust it in task definition for the region that you are deploying.
+## Configuring secrets in AWS
+Then go to AWS Secret Manager, copy ARN of created Secret and set it in the task definition for the region that you are deploying.
 Look for:
 ```
 <<TODO: set ARN of secrets manager>>
@@ -118,8 +118,8 @@ You should add the following secrets that will create users for basic auth:
 }
 ```
 
-Spring will automatically load this JSON to the Spring container and user **userEMEATest** with password **welt** will be
-available for basic auth during application execution in EMEA TEST environment.
+Spring will automatically load this JSON to the Spring container at the application start up and user **userEMEATest** 
+with password **welt** will be available for basic auth during application execution in EMEA TEST environment.
 
 ## Build & Deploy to Fargate
 When you are done with setting up the infrastructure, please go to your fork repository, open **Actions** tab and run
@@ -149,6 +149,8 @@ curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
 User is **testUser** and password is **welt**.
 
 # Deploying AWS infrastructure (locally)
+You can also deploy infrastructure locally, without CICD.
+
 To run Terraform you first need to install it on your local machine.
 You need **terraform_1.4.6** or higher version.
 
