@@ -15,6 +15,11 @@ on:
         type: boolean
         required: false
         default: false
+      skipEKSDeploy:
+        description: Should skip EKS deployment?
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   properties:
@@ -34,7 +39,9 @@ jobs:
       CLUSTER_NAME: ${{ needs.properties.outputs.CLUSTER_NAME }}
       SERVICE_NAME: ${{ needs.properties.outputs.SERVICE_NAME }}
       SKIP_SMOKE_TESTS: ${{ (github.event.inputs.skipSmokeTests != null && github.event.inputs.skipSmokeTests == 'true') || 'false' }}
+      SKIP_EKS: ${{ (github.event.inputs.skipEKSDeploy != null && github.event.inputs.skipEKSDeploy == 'true') || 'false' }}
       SMOKETEST_BACKEND_PASSWORD: ${{ secrets.BACKEND_EMEA_TEST_SMOKETEST_BACKEND_PASSWORD }}
+      EKS_CLUSTER_NAME: ${{ needs.properties.outputs.CLUSTER_NAME }}
 
     steps:
       - name: Checkout
@@ -81,12 +88,23 @@ jobs:
 
       # deploy:
       - name: Deploy Amazon ECS task definition
+        if: ${{ env.SKIP_EKS == 'true' }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: assembly-fargate/src/main/resources/fargate/BACKEND_EMEA_TEST/task.json
           service: ${{ env.SERVICE_NAME }}
           cluster: ${{ env.CLUSTER_NAME }}
           wait-for-service-stability: true
+
+      # deploy on EKS:
+      - name: Update kube config
+        if: ${{ env.SKIP_EKS == 'false' }}
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $REGION
+
+      - name: Deploy Amazon EKS
+        if: ${{ env.SKIP_EKS == 'false' }}
+        run: |
+          kubectl apply -f assembly-k8s/src/main/resources/config/deployment.yaml
 
       - name: Run smoke tests
         if: ${{ env.SKIP_SMOKE_TESTS == 'false' }}
