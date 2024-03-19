@@ -100,6 +100,12 @@ resource "aws_ecs_service" "ecs_backend_service" {
 
   task_definition = aws_ecs_task_definition.ecs_backend_task.arn
 
+  lifecycle {
+    ignore_changes = [
+      task_definition
+    ]
+  }
+
   tags = var.common_tags
 }
 
