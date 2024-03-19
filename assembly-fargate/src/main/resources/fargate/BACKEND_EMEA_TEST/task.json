@@ -40,7 +40,7 @@
       ],
       "secrets": [
         {
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:513741763509:secret:backend-secretsmanager-test-eu-central-1-k46KgN",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:513741763509:secret:backend-secretsmanager-test-eu-central-1-jVgGIZ",
           "name": "SPRING_APPLICATION_JSON"
         }
       ],
@@ -58,9 +58,7 @@
     }
   ],
   "taskRoleArn": "arn:aws:iam::513741763509:role/backend-ecs-task-role-eu-central-1",
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
+  "requiresCompatibilities": ["FARGATE"],
   "networkMode": "awsvpc",
   "memory": "2048",
   "cpu": "1024"
