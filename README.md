@@ -2,8 +2,30 @@
 This repository holds reference Spring Boot project that can be deployed to AWS
 
 # Run locally
-To run this application locally, please first call ```docker-compose up``` in ```/local``` directory,
-in order to set up local DynamoDB instance.
+To run this application locally, please first call ```docker-compose up``` in ```/local/assembly-local``` directory.
+
+This will set up the following components:
+* DynamoDB
+  * With 'Measurements' table holding measurements for devices 
+  * http://localhost:8000
+* DynamoDB Admin Panel
+  * http://localhost:8001
+* Filebeat
+  * It will load Spring Boot logs from file and redirect them to Elasticsearch
+* Kibana
+  * It will allow visual access to application logs 
+  * http://localhost:5601
+* Prometheus
+  * It will allow querying application metrics
+  * http://localhost:9090
+* Grafana
+  * It will allow dashboards creation
+  * http://localhost:3003
+* Elasticsearch
+  * It will allow indexing and saving logs for later visual access via Kibana
+  * http://localhost:9200
+
+DynamoDB will be populated with test measurement data.
 
 Then, please configure ```application.yml```:
 ```yml
@@ -15,6 +37,11 @@ aws:
     secretKey: dummySecret
 ```
 
+We have to point to our local DynamoDB instance. Access and secret keys must be set to any values, they simply cannot 
+stay empty.
+
+Finally, simply run Application in IntelliJ with 'Run' button.
+
 # Preparation to the deployment
 To deploy infrastructure to your sandbox account please first fork our base repository.
 To do it, go to:
@@ -23,7 +50,7 @@ To do it, go to:
 and click on Fork button and then (+) Create new fork.
 
 After forking repository to your account, please clone it to your local machine and search for all occurrences of:
-* 339713116995
+* <<ACCOUNT_ID>>
 
 This is base AWS account id that we use for the base repository.
 You must replace this with your own account id in all files.
@@ -40,15 +67,14 @@ aws_secret_access_key = YOU_SECRET_ACCESS_KEY
 **DO NOT USER ROOT USER CREDENTIALS!** Instead, create admin user in IAM, assign him **AdministratorAccess** policy
 and generate credentials for this non-root user.
 
-Then please run bash (e.g. Git Bash), and go to ```/aws-infrastructure/terraform``` directory.
-Set the following environmental variable:
+Then please run bash (e.g. Git Bash), and go to . ``/aws-infrastructure/terraform``` directory.
+Set 'RANDOM_STRING' environmental variable. This random string should be some random value. It is important to come up 
+with an unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must 
+be unique globally. Please also do not make it too long.
+Here is example
 ```
 export RANDOM_STRING="dakj18aad88"
 ```
-
-This random string should be some random value. It is important to come up with an unique value, as this will affect 
-the name of the Terraform state bucket that will be created, thus it must be unique globally.
-Please also do not make it too long.
 
 Please again push changes to your remote repository.
 
@@ -71,6 +97,10 @@ and create two repository secrets:
 * BACKEND_EMEA_TEST_AWS_SECRET
 
 and set accordingly **AWS_KEY** and **AWS_SECRET**, same as in ```..\.aws\credentials```.
+
+It is all what we have to do for secrets in GitHub.
+
+Now go to AWS Secret Manager, copy arn of created Secret and adjust it in your code. Then enter some dummy values for created Secret.
 
 # Build & Deploy
 When you are done with setting up the infrastructure, please go to your fork repository, open **Actions** tab and run
