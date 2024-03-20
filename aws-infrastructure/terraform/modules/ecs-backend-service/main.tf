@@ -105,7 +105,7 @@ resource "aws_ecs_service" "ecs_backend_service" {
       task_definition
     ]
   }
-   
+
   tags = var.common_tags
 }
 

@@ -57,4 +57,3 @@ jobs:
           chmod +x setup_new_region.sh
           chmod +x w2.sh
           ./setup_new_region.sh w2.sh backend-test eu-central-1 emea plan
-
