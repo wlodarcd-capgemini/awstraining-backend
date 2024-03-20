@@ -48,16 +48,6 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
-data "terraform_remote_state" "kibana" {
-  backend = "s3"
-  config = {
-    bucket         = var.remote_state_bucket
-    dynamodb_table = "backend_tf_lock_remote_dynamo"
-    key            = "kibana.tfstate"
-    region         = var.region
-  }
-}
-
 data "terraform_remote_state" "ecr" {
   backend = "s3"
   config = {
@@ -78,7 +68,6 @@ module "ecs_monitoring_service" {
   region= var.region
   common_tags = var.common_tags
   discovery_filter = "application=backend"
-  elasticsearch_url = data.terraform_remote_state.kibana.outputs.endpoint
   grafana_target_group_arn = data.terraform_remote_state.ecs_monitoring_cluster.outputs.grafana_target_group_arn
   kibana_target_group_arn = data.terraform_remote_state.ecs_monitoring_cluster.outputs.kibana_target_group_arn
   prometheus_target_group_arn = data.terraform_remote_state.ecs_monitoring_cluster.outputs.prometheus_target_group_arn

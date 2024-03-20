@@ -137,11 +137,11 @@ check_properties "$target_path" "$region" "$profile"
 check_tfstate_with_profile
 check_path_override
 
-# Check if RANDOM_STRING is not empty
-if [ -n "$RANDOM_STRING" ]; then
-    suffix="-${RANDOM_STRING}"
+# Check if UNIQUE_BUCKET_STRING is not empty
+if [ -n "$UNIQUE_BUCKET_STRING" ]; then
+    suffix="-${UNIQUE_BUCKET_STRING}"
 else
-    suffix=""
+    suffix="<<CUSTOM_UNIQUE_BUCKET_STRING>>"
 fi
 
 # export common Terraform variables
