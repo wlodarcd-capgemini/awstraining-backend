@@ -59,6 +59,13 @@ After forking repository to your account, please clone it to your local machine 
 This is base AWS account id that we use for the base repository.
 You must replace this with your own account id in all files.
 
+Then, you should look for all occurrences of:
+* <<CUSTOM_UNIQUE_BUCKET_STRING>>
+
+This string should be some unique value. It is important to come up
+with a unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must
+be unique globally. Please also do not make it too long.
+
 Push changes to your remote repository.
 
 Then you should create a new profile in ```C:\Users\YOURUSER\.aws\credentials``` and set credentials to your account:
@@ -70,19 +77,6 @@ aws_secret_access_key = YOU_SECRET_ACCESS_KEY
 
 **DO NOT USER ROOT USER CREDENTIALS!** Instead, create admin user in IAM, assign him **AdministratorAccess** policy
 and generate credentials for this non-root user.
-
-Then please run bash (e.g. Git Bash), and go to ```aws-infrastructure/terraform``` directory.
-Set **UNIQUE_BUCKET_STRING** environmental variable. This string should be some unique value. It is important to come up 
-with a unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must 
-be unique globally. Please also do not make it too long.
-Here is example
-```
-export UNIQUE_BUCKET_STRING="dakj18aad88"
-```
-
-You should also set this environmental variable in ```provisionWithTerraform.yml``` workflow.
-
-Please again push changes to your remote repository.
 
 # Deploying AWS infrastructure (GitHub)
 ## Setting AWS credentials in GitHub
@@ -151,6 +145,18 @@ curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
 ```
 
 User is **testUser** and password is **welt**.
+
+# Applying Terraform changes for single module (locally)
+In ```/aws-infrastructure/terraform``` directory:
+
+```
+./w2.sh [PROFILE] [REGION] [PATH_TO_MODULE] apply
+```
+
+For example:
+```
+./w2.sh backend-test eu-central-1 common/services/ecs-backend-cluster apply
+```
 
 # Deploying AWS infrastructure (locally)
 You can also deploy infrastructure locally, without CICD.
