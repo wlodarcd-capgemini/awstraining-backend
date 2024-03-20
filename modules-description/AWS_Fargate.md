@@ -3,20 +3,23 @@
 * 8h
 
 ## Entry requirements
-* Enrollment in **AWS Basics** training
-  * GitHub account
-  * AWS account with technical user created
-* Terraform v1.4.6 installed
-
+* Completion of **AWS Basics** training
+* Creation of AWS Sandbox account & Initial login to AWS
+* Creation of IAM technical user and credentials
+* Creation of GitHub account
+* Basic JAVA and Spring knowledge
+* Basic understanding of GitHub Actions
+ * Completion of CICD module might be helpful but is not a must
+* Installation of Terraform version 1.4.6
 
 ## Goals
 * Understand **basic** concepts of AWS Fargate
-* Understand how to integrate other AWS Services on Fargate
-
+* Understand how to integrate AWS services with Spring application to create a hybrid Java-Cloud solution
+* Understand building blocks of a classic backend application that is deployed to AWS
 
 ## Program
 * Welcome & Local environment setup testing
-* Fargate Hands-on: infrastructure and application deployment 
+* ECS Fargate infrastructure and base application deployment 
 * Introduction to Fargate
 * Introduction to dedicated AWS project structure
 * Introduction to AWS SDK for Java
