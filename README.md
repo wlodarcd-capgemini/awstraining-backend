@@ -2,7 +2,11 @@
 This repository holds reference Spring Boot project that can be deployed to AWS
 
 # Run locally
-To run this application locally, please first call ```docker-compose up``` in ```/local/assembly-local``` directory.
+First run ```mvn clean install``` in root directory. Maven will generate Open API auto-generated classes.
+Then, you should right-click on the **awstraining-backend** in Project structure on the left and select 
+**Maven -> Generate Sources & Update Folders**.
+
+Then, please call ```docker-compose up``` in ```/local/assembly-local``` directory.
 
 This will set up the following components:
 * DynamoDB

@@ -46,7 +46,7 @@ public class DynamoDBConfig {
                             new BasicAWSCredentials(dynamodbAccessKey, dynamodbSecretKey))).build();
         } else {
             // using real dynamodb instance
-            return AmazonDynamoDBClientBuilder.standard().withRegion(awsRegion)
+            return AmazonDynamoDBClientBuilder.standard()
                             .withClientConfiguration(new ClientConfiguration()
                                     .withMaxConnections(poolSize))
                             .build();
