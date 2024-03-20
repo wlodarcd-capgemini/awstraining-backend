@@ -23,6 +23,6 @@ management:
 aws:
   #region: eu-central-1
   #dynamodb:
-  #  endpoint: http://localhost:8000
-  #  accessKey: dummyAccess
-  #  secretKey: dummySecret
+    #endpoint: http://localhost:8000
+    #accessKey: dummyAccess
+    #secretKey: dummySecret
