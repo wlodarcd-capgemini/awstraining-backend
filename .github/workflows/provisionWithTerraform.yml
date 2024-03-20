@@ -27,7 +27,7 @@ jobs:
       AWS_KEY:  ${{ secrets.BACKEND_EMEA_TEST_AWS_KEY }}
       AWS_SECRET: ${{ secrets.BACKEND_EMEA_TEST_AWS_SECRET }}
       REGION: ${{ needs.properties.outputs.REGION }}
-      RANDOM_STRING: "dakj18aad88"
+      UNIQUE_BUCKET_STRING: "<<CUSTOM_UNIQUE_BUCKET_STRING>>"
 
     steps:
       - name: Checkout

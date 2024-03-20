@@ -21,7 +21,7 @@ management:
         include: [ "prometheus", "health" ]
 
 aws:
-  region: eu-central-1
+  #region: eu-central-1
   #dynamodb:
   #  endpoint: http://localhost:8000
   #  accessKey: dummyAccess
