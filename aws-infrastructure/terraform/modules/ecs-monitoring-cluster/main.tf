@@ -33,6 +33,13 @@ resource "aws_security_group" "sg_monitoring" {
   }
 
   ingress {
+    from_port = 9200
+    to_port = 9200
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+
+  ingress {
     from_port = 3000
     to_port = 3000
     protocol = "tcp"
@@ -69,7 +76,7 @@ resource "aws_lb" "monitoring_lb" {
   name = "monitoring-lb"
   internal = false
   load_balancer_type = "network"
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   subnets = var.subnets
   tags = var.common_tags
@@ -95,7 +102,7 @@ resource "aws_lb_target_group" "kibana_target_group" {
   deregistration_delay = 30
 
   health_check {
-    path                = "/status"
+    path                = "/api/status"
     protocol            = "HTTP"
   }
 
