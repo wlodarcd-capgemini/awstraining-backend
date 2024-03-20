@@ -32,7 +32,28 @@ ${jsonencode(
         "arn:aws:ssm:${region}:${account_id}:parameter/config/application*",
         "arn:aws:ssm:${region}:${account_id}:parameter/config/backend*"
       ]
-    }
+    },
+    {
+      "Action": [
+        "translate:TranslateText"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Action": [
+        "comprehend:DetectSentiment"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sns:Publish"
+      ],
+      "Resource": "*"
+     }
   ]
 }
 )
