@@ -122,6 +122,11 @@ You should add the following secrets that will create users for basic auth:
 Spring will automatically load this JSON to the Spring container at the application start up and user **userEMEATest** 
 with password **welt** will be available for basic auth during application execution in EMEA TEST environment.
 
+**Attention!**
+Remember to set **BACKEND_EMEA_TEST_SMOKETEST_BACKEND_PASSWORD** secret in GitHub Settings when using CICD workflow.
+This should be set to "welt" (exactly as base-encoded password in AWS Secrets Manager), so that smoke tests will be executed
+without issues in CICD.
+
 ## Build & Deploy to Fargate
 When you are done with setting up the infrastructure, please go to your fork repository, open **Actions** tab and run
 **Multibranch pipeline** on the main branch.
