@@ -8,6 +8,7 @@
 * Creation of AWS Sandbox account & Initial login to AWS
 * Creation of IAM technical user and credentials
 * Creation of GitHub account
+* Installation of Terraform
 
 ## Goals
 * Understand **basic** IaC and Terraform concepts
