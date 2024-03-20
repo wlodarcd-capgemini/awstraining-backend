@@ -41,11 +41,6 @@ variable "discovery_filter" {
   type = string
 }
 
-variable "elasticsearch_url" {
-  description = "URL to Elasticsearch cluster"
-  type = string
-}
-
 variable "ecr_repository_url" {
   description = "URL to Monitoring ECR"
   type = string
