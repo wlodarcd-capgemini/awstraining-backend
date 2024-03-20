@@ -66,6 +66,9 @@ This string should be some unique value. It is important to come up
 with a unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must
 be unique globally. Please also do not make it too long.
 
+E.g.:
+* daja819ad
+
 Push changes to your remote repository.
 
 Then you should create a new profile in ```C:\Users\YOURUSER\.aws\credentials``` and set credentials to your account:
