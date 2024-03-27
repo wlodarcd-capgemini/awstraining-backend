@@ -42,13 +42,6 @@ ${jsonencode(
       "Resource": "*"
     },
     <!-- Lab3: Add statement, which allow your application detect sentiment using comprehend service -->
-    {
-      "Action": [
-        "comprehend:DetectSentiment"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }, 
     <!-- Lab1: Add statement, which allow your application to publish messages on all topics using sns service -->
     {
       "Effect": "Allow",
