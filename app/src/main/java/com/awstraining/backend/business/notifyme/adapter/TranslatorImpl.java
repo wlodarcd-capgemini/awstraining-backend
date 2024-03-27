@@ -17,6 +17,8 @@ public class TranslatorImpl implements Translator {
     
     private AmazonTranslate translate;
 
+    // TODO: lab2
+    //  1. Inject AWS AmazonTranslate from configuration TranslatorConfig.
     @Autowired
     public TranslatorImpl(AmazonTranslate translate) {
         this.translate = translate;
@@ -24,6 +26,11 @@ public class TranslatorImpl implements Translator {
     
     @Override
     public String translate(NotifyMeDO notifyMeDO) {
+        // TODO: lab2
+        //  1. Create translate text request.
+        //  2. Call translate.
+        //  3. Log information about successful translated message.
+        //  4. Return translated message
         final TranslateTextRequest translateRequest = new TranslateTextRequest()
                 .withText(notifyMeDO.text())
                 .withSourceLanguageCode(notifyMeDO.sourceLc())

@@ -10,17 +10,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+// TODO: lab1
+//  1. Create RestController "notification/v1".
+//  2. Familiarize yourself with api, open-api contract, how it is generated?
 @RestController
 @RequestMapping("notification/v1")
 public class NotifyMeController implements NotifyMeApi {
 
     private final NotifyMeService service;
 
+    // TODO: lab1
+    //  1. Inject service with business logic.
     @Autowired
     public NotifyMeController(final NotifyMeService service) {
         this.service = service;
     }
-    
+
+
+    // TODO: lab1
+    //  1. Implement notifyMe method. 
+    //  Method should return Http 200 and content of sent message to subscribers.
     @Override
     public ResponseEntity<SentMessage> notifyMe(NotifyMe notifyMe) {
         final NotifyMeDO notifyMeDO = map(notifyMe);
