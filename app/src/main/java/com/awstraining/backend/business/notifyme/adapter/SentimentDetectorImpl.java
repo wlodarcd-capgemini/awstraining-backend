@@ -23,7 +23,7 @@ public class SentimentDetectorImpl implements Sentiment {
         this.sentimentDetector = sentimentDetector;
     }
 
-    // TODO: lab2
+    // TODO: lab3
     //  1. Create detect sentiment text request.
     //  2. Call detection.
     //  3. Log information about sentiment.
