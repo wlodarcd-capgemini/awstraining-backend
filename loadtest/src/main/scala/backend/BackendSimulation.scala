@@ -31,15 +31,15 @@ class BackendSimulation extends Simulation {
     http
       .disableCaching
       .connectionHeader("keep-alive")
-      .shareConnections
+      .shareConnectionsó
       .proxy(Proxy(Constants.proxyHost, Constants.proxyPort.toInt).credentials(Constants.proxyUser, Constants.proxyPassword))
 
   val getAllStatesRequest = scenario("getAllStatesRequest").repeat(1) {
     group(Constants.getAllStatesRequestGroup) {
       exec(http("getAllStatesRequest_metrics")
-        .get(Constants.url + "/backend/<<TODO: finish request definition>>")
+        .get(Constants.url + "/device/v1/test")
         .header("Content-Type", "application/json")
-        .header("Authorization", "Basic <<TODO: setup base encoded password>>")
+        .header("Authorization", "Basic dGVzdFVzZXI6d2VsdA==")
         .header("Accept", "application/json")
         .check(status.in(200, 202))
       ).pause(1)
