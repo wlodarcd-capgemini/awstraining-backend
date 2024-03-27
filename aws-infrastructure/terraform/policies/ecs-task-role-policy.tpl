@@ -36,13 +36,6 @@ ${jsonencode(
     <!-- Lab2: Add statement, which allow your application translate text using translate service -->
     <!-- Lab3: Add statement, which allow your application detect sentiment using comprehend service -->
     <!-- Lab1: Add statement, which allow your application to publish messages on all topics using sns service -->
-    {
-      "Effect": "Allow",
-      "Action": [
-        "sns:Publish"
-      ],
-      "Resource": "*"
-     }
   ]
 }
 )
