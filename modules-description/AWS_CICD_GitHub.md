@@ -3,7 +3,8 @@
 * 8h
 
 ## Entry requirements
-* Completion of AWS Basics module
+* Completion of an AWS Basics module or equivalent knowledge
+  * Note: You may want to check the contents of the AWS Basics module to confirm whether you are familiar with the concepts presented in this training
 * Basic knowledge of any programming language
 * Creation of AWS Sandbox account & Initial login to AWS
 * Creation of IAM technical user and credentials
@@ -18,15 +19,15 @@
 
 
 ## Program
-* Welcome & GitHub accounts preparation​
-* Introduction to CICD​
-* Understanding GitHub Actions​
-* First Hands-on: Getting started with GitHub Actions​
+* Welcome & GitHub accounts preparation
+* Introduction to CICD
+* Understanding GitHub Actions
+* First Hands-on: Getting started with GitHub Actions
 * Second Hands-on: Custom Composite Actions
-* Third Hands-on: Implementing real CICD workflows​
+* Third Hands-on: Implementing real CICD workflows
   * Build & Test
   * Deploy to AWS
-* Summary & Questions​
+* Summary & Questions
 
 
 
