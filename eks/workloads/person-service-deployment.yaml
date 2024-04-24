@@ -2,37 +2,39 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: person-db
-  name: person-db
+    app: person-service
+  name: person-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: person-db
-  strategy:
-    type: RollingUpdate
+      app: person-service
   template:
     metadata:
       labels:
-        app: person-db
+        app: person-service
     spec:
       containers:
-        - name: postgres
-          image: docker.io/postgres:16
-          imagePullPolicy: IfNotPresent
+        - image: quay.io/ksobkowiak/person-service:latest
+          name: person-service
           env:
-            - name: POSTGRES_DB
+            - name: DB_DB
               valueFrom:
                 secretKeyRef:
                   key: db
                   name: person-db
-            - name: POSTGRES_PASSWORD
+            - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: password
                   name: person-db
-            - name: POSTGRES_USER
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   key: user
+                  name: person-db
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: host
                   name: person-db
