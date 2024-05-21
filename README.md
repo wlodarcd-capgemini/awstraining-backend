@@ -157,6 +157,7 @@ curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
 User is **userEMEATest** and password is **welt**.
 
 # Applying Terraform changes for single module (locally)
+## Using w2.sh script
 In ```/aws-infrastructure/terraform``` directory:
 
 ```
@@ -167,6 +168,34 @@ For example:
 ```
 ./w2.sh backend-test eu-central-1 common/services/ecs-backend-cluster apply
 ```
+
+## Using plain Terraform
+1. Go to given directory
+   ```cd aws-infrastructure/terraform/common/general/create-remote-state-bucket/```
+2. Initiate terraform -> ``` terraform init ```. This will install all modules required by this configuration
+3. Start creation of AWS infrastructure -> ``` terraform apply ```
+4. When asked we need to provide some variables
+```bash
+var.common_tags             -> {"app:hub"="emea", "app:env"="test", "app:name"="backend", "terraform-path"="create-remote-state-bucket", terraform="true"}
+var.environment             -> emea
+var.profile                 -> backend-test
+var.region                  -> eu-central-1
+var.remote_state_bucket     -> tf-state-backend-test-eu-central-1-<<UNIQUE_BUCKET_STRING>>
+var.shared_credentials_file -> C:\\Users\\<<USERNAME>>\\.aws\\credentials
+```
+Or use one-liner:
+```bash
+terraform apply \
+  -var='common_tags={"app:hub"="emea", "app:env"="test", "app:name"="backend", "terraform-path"="create-remote-state-bucket", terraform="true"}' \
+  -var='environment=emea' \
+  -var='profile=backend-test' \
+  -var='region=eu-central-1' \
+  -var='remote_state_bucket=tf-state-backend-test-eu-central-1-ps20052024' \
+  -var='shared_credentials_file=C:\\Users\\<<USERNAME>>\\.aws\\credentials'
+```
+Set ```<<USERNAME>>``` to your CORP ID.
+
+Unique bucket string is some string that will make your bucket name unique globally.
 
 # Deploying AWS infrastructure (locally)
 You can also deploy infrastructure locally, without CICD.
