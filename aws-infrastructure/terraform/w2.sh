@@ -141,7 +141,7 @@ check_path_override
 if [ -n "$UNIQUE_BUCKET_STRING" ]; then
     suffix="-${UNIQUE_BUCKET_STRING}"
 else
-    suffix="<<CUSTOM_UNIQUE_BUCKET_STRING>>"
+    suffix=""
 fi
 
 # export common Terraform variables
