@@ -21,12 +21,13 @@ ACTION=${@:4}
 
 TF_STATE_BUCKET="tf-state-${PROFILE}-${REGION}-${UNIQUE_BUCKET_STRING}"
 
-empty_tfstate_bucket() {
+delete_tfstate_bucket() {
   aws s3api delete-objects \
       --bucket $TF_STATE_BUCKET \
       --delete "$(aws s3api list-object-versions --bucket ${TF_STATE_BUCKET} --output=json --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" \
       --profile $PROFILE \
       --region $REGION || true
+  aws s3 rb s3://$TF_STATE_BUCKET --profile $PROFILE --region $REGION --force || true
 }
 
 delete_secrets_manager() {
@@ -88,8 +89,7 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
     ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
     ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
     ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
-    empty_tfstate_bucket
-    ./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
+    delete_tfstate_bucket
     delete_log_groups
   else
     echo "Skipping destroy - everything was already destroyed!"
