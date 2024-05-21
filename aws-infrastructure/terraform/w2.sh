@@ -90,11 +90,6 @@ check_path_override() {
 
 }
 
-run_terraform_command() {
-  echo "Running terraform command: $command"
-  terraform ${command} -var remote_state_bucket=${TF_VAR_remote_state_bucket} -var region=${region} -var environment=${environment} -var profile=${profile} -var shared_credentials_file=${SHARED_CREDENTIALS_FILE} ${options}
-}
-
 
 # ensure we're executing in the correct directory
 SCRIPT_DIR=$(cd "$(dirname "$0")"; pwd)
@@ -146,7 +141,7 @@ check_path_override
 if [ -n "$UNIQUE_BUCKET_STRING" ]; then
     suffix="-${UNIQUE_BUCKET_STRING}"
 else
-    suffix=""
+    suffix="<<CUSTOM_UNIQUE_BUCKET_STRING>>"
 fi
 
 # export common Terraform variables
@@ -166,21 +161,9 @@ tf_file_name="$(basename ${target_path})"
 state_path="${tf_file_name}.tfstate"
 
 terraform get
-terraform init -backend-config "bucket=${TF_VAR_remote_state_bucket}" -backend-config "key=${state_path}" -backend-config "region=${region}" -backend-config "profile=${profile}" -var environment=${environment} -var profile=${profile} -var remote_state_bucket=${TF_VAR_remote_state_bucket} -var region=${region} -var shared_credentials_file="${SHARED_CREDENTIALS_FILE}" -lock=true
+terraform init -backend-config "bucket=${TF_VAR_remote_state_bucket}" -backend-config "key=${state_path}" -backend-config "region=${region}" -backend-config "profile=${profile}" -var environment=${environment} -var profile=${profile} -var remote_state_bucket=${TF_VAR_remote_state_bucket} -var region=${region} -var shared_credentials_file="${UNIQUE_BUCKET_STRING}" -lock=true
 if [ "$command" != "init" ]
 then
-  if [[ "$target_path" =~ "common/general/create-remote-state-bucket" ]]; then
-    echo "Creating remote state bucket."
-    # Check if the bucket exists
-    if aws s3api head-bucket --profile $profile --bucket $TF_VAR_remote_state_bucket 2>/dev/null; then
-      # If the bucket exists, execute this block
-      echo "Bucket ${TF_VAR_remote_state_bucket} already exists. Stopping bucket creation."
-    else
-      echo "Bucket ${TF_VAR_remote_state_bucket} does not exist and will be created."
-      run_terraform_command
-    fi
-  else
-    echo "Executing standard Terraform command."
-    run_terraform_command
-  fi
+  echo "Running terraform command: $command"
+  terraform ${command} -var remote_state_bucket=${TF_VAR_remote_state_bucket} -var region=${region} -var environment=${environment} -var profile=${profile} -var shared_credentials_file=${UNIQUE_BUCKET_STRING} ${options}
 fi
