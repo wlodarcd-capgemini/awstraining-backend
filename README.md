@@ -205,7 +205,7 @@ You need **terraform_1.4.6** or higher version.
 
 Now you can run a script to set up a new AWS environment (still in ```/aws-infrastructure/terraform``` directory):
 ```
-./setup_new_region.sh w2.sh backend-test eu-central-1 emea apply -auto-approve
+./setup_new_region.sh w2.sh backend-test eu-central-1 apply -auto-approve
 ```
 
 Terraform should automatically approve all changes and create all required resources one-by-one.
@@ -221,7 +221,7 @@ Empty TFSTATE bucket in S3.
 
 Run a script to destroy a new AWS environment (in ```/aws-infrastructure/terraform``` directory):
 ```
-./setup_new_region.sh w2.sh backend-test eu-central-1 emea destroy -auto-approve
+./setup_new_region.sh w2.sh backend-test eu-central-1 destroy -auto-approve
 ```
 
 Terraform should automatically approve all changes and delete all existing resources one-by-one.
