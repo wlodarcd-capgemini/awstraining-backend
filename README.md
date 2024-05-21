@@ -59,19 +59,19 @@ After forking repository to your account, please clone it to your local machine 
 This is base AWS account id that we use for the base repository.
 You must replace this with your own account id in all files.
 
-Then, you should look for all occurrences of:
-* <<CUSTOM_UNIQUE_BUCKET_STRING>>
+Then, you should go to **wrapper.properties** and set **UNIQUE_BUCKET_STRING** to your custom, unique string, that will
+be added as a suffix to your state bucket name.
 
-This string should be some unique value. It is important to come up
-with a unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must
-be unique globally. Please also do not make it too long.
+It is important to come up with a unique value, as this will affect the name of the Terraform state bucket 
+that will be created, thus it must be unique globally. Please also do not make it too long.
 
 E.g.:
 * daja819ad
 
 Push changes to your remote repository.
 
-Then you should create a new profile in ```C:\Users\YOURUSER\.aws\credentials``` and set credentials to your account:
+Then, in order to be able to apply Terraform changes locally, you should create a new profile 
+in ```C:\Users\YOURUSER\.aws\credentials``` and set credentials to your account:
 ```
 [backend-test]
 aws_access_key_id = YOUR_ACCESS_KEY_ID
@@ -95,8 +95,10 @@ Then, you should run ```provisionWithTerraform``` pipeline under **Actions** tab
 This will automatically provision AWS infrastructure.
 
 ## Configuring secrets in AWS
-Then go to AWS Secret Manager, copy ARN of created Secret and set it in the task definition for the region that you are deploying.
-Look for:
+In order for our application to be able to access AWS Secrets Manager containing credentials for basic auth, please 
+go to AWS Secret Manager, copy ARN of the created Secret and set it in the task definition for the region that you are deploying.
+
+Search for (e.g. in EMEA-TEST tak definition, if you are deploying to EMEA TEST):
 ```
 <<TODO: set ARN of secrets manager>>
 ```
@@ -122,9 +124,9 @@ You should add the following secrets that will create users for basic auth:
 Spring will automatically load this JSON to the Spring container at the application start up and user **userEMEATest** 
 with password **welt** will be available for basic auth during application execution in EMEA TEST environment.
 
-**Attention!**
+### Setting basic auth credentials for tests
 Remember to set **BACKEND_EMEA_TEST_SMOKETEST_BACKEND_PASSWORD** secret in GitHub Settings when using CICD workflow.
-This should be set to "welt" (exactly as base-encoded password in AWS Secrets Manager), so that smoke tests will be executed
+This should be set to "welt" (exactly like base-encoded password in AWS Secrets Manager), so that smoke tests will be executed
 without issues in CICD.
 
 ## Build & Deploy to Fargate
@@ -152,7 +154,7 @@ curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
 }'
 ```
 
-User is **testUser** and password is **welt**.
+User is **userEMEATest** and password is **welt**.
 
 # Applying Terraform changes for single module (locally)
 In ```/aws-infrastructure/terraform``` directory:
