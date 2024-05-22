@@ -122,9 +122,6 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
   fi
 else
   # Setup infrastructure
-  # Common stuff
-  ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
-
   if [ "$TYPE" = "eks" ]; then
     cd common/services/eks
     echo "Creating EKS..."
