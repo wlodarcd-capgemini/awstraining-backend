@@ -95,12 +95,15 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
       printenv
       cd common/services/eks
 
-      echo "Creating .kube config"
-      whomai
-      sudo echo "" > /home/runner/.kube/config
+      echo "Creating kube_config.cfg"
+      echo "" > kube_config.cfg
+      echo "I am here"
+      pwd
+      export KUBE_CONFIG_PATH=$(pwd)/kube_config.cfg
+      echo "Path"
+      echo $KUBE_CONFIG_PATH
 
-      echo "Setting chmod"
-      chmod 777 /home/runner/.kube/config
+      chmod 777 kube_config.cfg
       #terraform state rm `terraform state list | grep eks` -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
       terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
       terraform destroy -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
