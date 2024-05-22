@@ -119,11 +119,11 @@ else
   if [ "$TYPE" = "eks" ]; then
     echo "Creating EKS..."
     cd common/services/eks
-    terraform init -backend-config "bucket=$TF_STATE_BUCKET" -backend-config "key=eks" -backend-config "region=$REGION" -backend-config "profile=$PROFILE"
+    terraform init
     terraform validate
-    terraform plan -out planfile -target module.vpc -target module.eks -var="region=$REGION" -var="aws_profile_name=$PROFILE"
+    terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="region=$REGION" -var="aws_profile_name=$PROFILE" -var="state_bucket=$TF_STATE_BUCKET"
     terraform apply planfile
-    terraform plan -out planfile -target module.eks_managed_node_group -var="region=$REGION" -var="aws_profile_name=$PROFILE"
+    terraform plan -out planfile -var="region=$REGION" -var="aws_profile_name=$PROFILE" -var="state_bucket=$TF_STATE_BUCKET"
     terraform apply planfile
   else
     echo "Creating ECS..."

@@ -27,7 +27,7 @@ Plan VPC and EKS cluster
 Create VPC and EKS cluster
 >terraform apply planfile
 
-Pland EKS cluster nodes
+Plan EKS cluster nodes
 > terraform plan -out planfile
 
 Create EKS cluster nodes
