@@ -138,15 +138,15 @@ else
     fi
 
     echo "Initialize"
-    terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
+    terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var="remote_state_bucket=${TF_STATE_BUCKET_EKS}" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
     echo "Validate"
     terraform validate
     echo "Plan EKS"
-    terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="region=$REGION" -var="aws_profile_name=$PROFILE"
+    terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="remote_state_bucket=${TF_STATE_BUCKET_EKS}" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
     echo "Apply EKS"
     terraform apply planfile
     echo "Plan"
-    terraform plan -out planfile -var="region=$REGION" -var="aws_profile_name=$PROFILE"
+    terraform plan -out planfile -var remote_state_bucket=${TF_STATE_BUCKET_EKS} -var="region=$REGION" -var="aws_profile_name=$PROFILE"
     echo "Apply"
     terraform apply planfile
   else
