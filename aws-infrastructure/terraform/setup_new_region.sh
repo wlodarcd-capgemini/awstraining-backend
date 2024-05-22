@@ -19,7 +19,7 @@ PROFILE=$4
 REGION=$5
 # Get the corresponding hub from the associative array
 HUB="${REGION_TO_HUB[$REGION]}"
-ACTION=${@:5}
+ACTION=${@:6}
 
 TF_STATE_BUCKET="tf-state-${PROFILE}-${REGION}-${UNIQUE_BUCKET_STRING}"
 
