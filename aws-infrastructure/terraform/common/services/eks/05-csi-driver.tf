@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket = var.state_bucket
+    key    = "eks-csi-driver"
+    region = var.region
+    profile = var.aws_profile_name
+  }
+}
+
 resource "helm_release" "aws_ebs_csi_driver" {
   depends_on = [null_resource.next, module.eks_managed_node_group]
   name       = "aws-ebs-csi-driver"

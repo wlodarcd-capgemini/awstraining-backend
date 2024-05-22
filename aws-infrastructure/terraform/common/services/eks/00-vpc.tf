@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket = var.state_bucket
+    key    = "eks-vpc"
+    region = var.region
+    profile = var.aws_profile_name
+  }
+}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.5.0"
