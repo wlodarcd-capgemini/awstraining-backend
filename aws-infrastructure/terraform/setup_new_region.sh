@@ -120,7 +120,7 @@ else
     echo "Creating EKS..."
     cd common/services/eks
     echo "1.) Initialize"
-    terraform init -backend-config "bucket=${TF_STATE_BUCKET}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var remote_state_bucket=${TF_STATE_BUCKET} -var region=${REGION}
+    terraform init -backend-config "bucket=${TF_STATE_BUCKET}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
     echo "2.) Validate"
     terraform validate
     echo "3.) Plan EKS"
