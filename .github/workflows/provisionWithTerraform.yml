@@ -10,6 +10,13 @@ on:
         type: choice
         options:
           - 'BACKEND_EMEA_TEST'
+      deploymentType:
+        description: Select deployment type
+        required: true
+        type: choice
+        options:
+          - 'ecs'
+          - 'eks'
 
 
 jobs:
@@ -48,9 +55,10 @@ jobs:
           echo "[${{ env.AWS_PROFILE }}]" > ~/.aws/credentials
           echo "aws_access_key_id = ${{ env.AWS_KEY }}" >> ~/.aws/credentials
           echo "aws_secret_access_key = ${{ env.AWS_SECRET }}" >> ~/.aws/credentials
+
       - name: Run Terraform apply
         run: |
           cd aws-infrastructure/terraform
           chmod +x setup_new_region.sh
           chmod +x w2.sh
-          ./setup_new_region.sh w2.sh ${{ env.AWS_PROFILE }} ${{ env.AWS_REGION }} apply -auto-approve
+          ./setup_new_region.sh w2.sh ${{ inputs.deploymentType }} ${{ env.AWS_PROFILE }} ${{ env.AWS_REGION }} apply -auto-approve
