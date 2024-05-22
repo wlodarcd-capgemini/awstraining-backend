@@ -96,7 +96,8 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
       cd common/services/eks
 
       echo "Creating .kube config"
-      echo "" > /home/runner/.kube/config
+      whomai
+      sudo echo "" > /home/runner/.kube/config
 
       echo "Setting chmod"
       chmod 777 /home/runner/.kube/config
