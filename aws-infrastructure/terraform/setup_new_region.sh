@@ -77,32 +77,41 @@ fi
 rm common/*/*/.terraform/terraform.tfstate || true
 
 if [ "$ACTION" = "destroy -auto-approve" ]; then
+  # Destroy infrastructure
   echo "Checking if $TF_STATE_BUCKET exists..."
   if aws s3api head-bucket --bucket $TF_STATE_BUCKET --profile $PROFILE --region $REGION 2>/dev/null; then
+
+    if [ "$TYPE" = "eks" ]; then
+      echo "Removing EKS..."
+      cd common/services/eks
+      terraform destroy
+    else
+      echo "Removing ECS..."
+      delete_secrets_manager
+      empty_ecr
+      ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
+      ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
+      ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
+      ./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
+      ./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
+      ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
+      ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
+      ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
+      delete_log_groups
+    fi
+
+    # Common
     ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
-    delete_secrets_manager
-    empty_ecr
-    ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
-    ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
-    ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
-    ./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
-    ./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
-    ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
-    ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
-    ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
     delete_tfstate_bucket
-    delete_log_groups
   else
     echo "Skipping destroy - everything was already destroyed!"
   fi
 else
+  # Setup infrastructure
+  # Common stuff
   ./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
-  ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
-  ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
-  ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
-  ./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
-  ./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
-  ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
+
   if [ "$TYPE" = "eks" ]; then
     echo "Creating EKS..."
     cd common/services/eks
@@ -114,8 +123,13 @@ else
     terraform apply planfile
   else
     echo "Creating ECS..."
+    ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
+    ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
+    ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
+    ./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
+    ./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
+    ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
     ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
     ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
   fi
-  ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
 fi
