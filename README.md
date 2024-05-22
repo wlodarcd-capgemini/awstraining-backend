@@ -1,5 +1,5 @@
-# awstraining-backend
-This repository holds reference Spring Boot project that can be deployed to AWS
+# AWS Training Reference Application
+This repository holds reference Spring Boot project that can be deployed to AWS.
 
 # Run locally
 First run ```mvn clean install``` in root directory. Maven will generate Open API auto-generated classes.
@@ -156,6 +156,14 @@ curl http://backend-lb-672995306.eu-central-1.elb.amazonaws.com/device/v1/test \
 
 User is **userEMEATest** and password is **welt**.
 
+## Destroying infrastructure
+In order to destroy your infrastructure you can simply call the **Destroy Infrastructure**
+workflow in GitHub.
+
+It will do the whole work for you.
+
+Please remember to stop all running ECS Fargate tasks before executing the workflow.
+
 # Applying Terraform changes for single module (locally)
 ## Using w2.sh script
 In ```/aws-infrastructure/terraform``` directory:
@@ -198,6 +206,7 @@ Set ```<<USERNAME>>``` to your CORP ID.
 Unique bucket string is some string that will make your bucket name unique globally.
 
 # Deploying AWS infrastructure (locally)
+## Setting up the AWS infrastructure
 You can also deploy infrastructure locally, without CICD.
 
 To run Terraform you first need to install it on your local machine.
@@ -212,20 +221,15 @@ Terraform should automatically approve all changes and create all required resou
 In case of errors, please correct them, delete from setup_new_region.sh lines that has already been executed and run
 the script again.
 
-# Destroying AWS infrastructure (locally)
+## Destroying AWS infrastructure
 Stop all running tasks.
 
-Delete images from AWS ECR and delete secrets from AWS Secret Manager.
-
-Empty TFSTATE bucket in S3.
-
-Run a script to destroy a new AWS environment (in ```/aws-infrastructure/terraform``` directory):
+Run a script to destroy an AWS environment (in ```/aws-infrastructure/terraform``` directory):
 ```
 ./setup_new_region.sh w2.sh backend-test eu-central-1 destroy -auto-approve
 ```
 
 Terraform should automatically approve all changes and delete all existing resources one-by-one.
-In case of errors, please correct them, delete from setup_new_region.sh lines that has already been executed and run
-the script again.
+In case of errors, please correct them, and run the script again.
 
 Check IAM, Cloudwatch Logs, S3 buckets if everything was deleted.
