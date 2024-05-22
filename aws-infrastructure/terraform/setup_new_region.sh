@@ -124,11 +124,11 @@ else
     echo "2.) Validate"
     terraform validate
     echo "3.) Plan EKS"
-    terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="region=$REGION" -var="aws_profile_name=$PROFILE" -var="state_bucket=$TF_STATE_BUCKET"
+    terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="region=$REGION" -var="aws_profile_name=$PROFILE"
     echo "4.) Apply EKS"
     terraform apply planfile
     echo "5.) Plan"
-    terraform plan -out planfile -var="region=$REGION" -var="aws_profile_name=$PROFILE" -var="state_bucket=$TF_STATE_BUCKET"
+    terraform plan -out planfile -var="region=$REGION" -var="aws_profile_name=$PROFILE"
     echo "6.) Apply"
     terraform apply planfile
   else
