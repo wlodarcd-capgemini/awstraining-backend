@@ -1,12 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket = var.state_bucket
-    key    = "eks"
-    region = var.region
-    profile = var.aws_profile_name
-  }
-}
-
 module "eks" {
   source     = "terraform-aws-modules/eks/aws"
   version    = "~> 20.5.0"

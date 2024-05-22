@@ -1,12 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket = var.state_bucket
-    key    = "eks-ng"
-    region = var.region
-    profile = var.aws_profile_name
-  }
-}
-
 module "eks_managed_node_group" {
   source     = "terraform-aws-modules/eks/aws//modules/eks-managed-node-group"
   version    = "~> 20.5.0"

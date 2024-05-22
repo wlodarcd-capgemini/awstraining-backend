@@ -1,12 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket = var.state_bucket
-    key    = "eks-lb-controller"
-    region = var.region
-    profile = var.aws_profile_name
-  }
-}
-
 resource "aws_iam_policy" "eks_lb_controller_policy" {
   depends_on  = [null_resource.next, module.eks_managed_node_group]
   name        = "AmazonEKSLoadBalancerControllerPolicy"
