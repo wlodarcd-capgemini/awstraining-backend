@@ -1,5 +1,5 @@
-name: Provision with Terraform
-run-name: Provision with Terraform
+name: Destroy infrastructure with Terraform
+run-name: Destroy infrastructure with Terraform
 
 on:
   workflow_dispatch:
@@ -53,4 +53,4 @@ jobs:
           cd aws-infrastructure/terraform
           chmod +x setup_new_region.sh
           chmod +x w2.sh
-          ./setup_new_region.sh w2.sh ${{ env.AWS_PROFILE }} ${{ env.AWS_REGION }} apply -auto-approve
+          ./setup_new_region.sh w2.sh ${{ env.AWS_PROFILE }} ${{ env.AWS_REGION }} destroy -auto-approve
