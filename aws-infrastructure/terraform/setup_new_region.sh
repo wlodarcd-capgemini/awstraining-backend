@@ -14,8 +14,9 @@ declare -A REGION_TO_HUB=(
 
 SCRIPT=$1
 TYPE=$2
-PROFILE=$3
-REGION=$4
+RANGE=$3
+PROFILE=$4
+REGION=$5
 # Get the corresponding hub from the associative array
 HUB="${REGION_TO_HUB[$REGION]}"
 ACTION=${@:5}
@@ -53,21 +54,21 @@ delete_log_groups() {
   awk '{print $2}' | grep -v ^$ | while read x; do  echo "deleting $x" ; aws logs delete-log-group --log-group-name $x --region $REGION --profile $PROFILE; done || true
 }
 
-if [ "$#" -lt 5 ]; then
+if [ "$#" -lt 6 ]; then
   echo "Not enough arguments provided."
   echo
   echo "Script should be used in following form:"
   echo
-  echo "$0 SCRIPT TYPE PROFILE REGION ACTION"
+  echo "$0 SCRIPT TYPE RANGE PROFILE REGION ACTION"
   echo
   echo "example usage: "
   echo
-  echo "$0 setup_new_region.sh ecs backend-test eu-central-1 plan"
+  echo "$0 setup_new_region.sh ecs full backend-test eu-central-1 plan"
   echo
   echo "or: "
   echo
-  echo "$0 setup_new_region.sh eks backend-test eu-central-1 apply"
-  echo "$0 setup_new_region.sh eks backend-test eu-central-1 apply -auto-approve"
+  echo "$0 setup_new_region.sh eks only backend-test eu-central-1 apply"
+  echo "$0 setup_new_region.sh eks only backend-test eu-central-1 apply -auto-approve"
   echo
   echo "Apply will ask for your confirmation after each module."
   exit 1
@@ -100,9 +101,15 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
       delete_log_groups
     fi
 
-    # Common
-    ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
-    delete_tfstate_bucket
+    # Full destroy of common files
+    if [ "$RANGE" = "full" ]; then
+      # Go back to main terraform directory
+      cd ../../..
+      echo "Removing common files (FULL destroy)"
+      ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
+      delete_tfstate_bucket
+    fi
+
   else
     echo "Skipping destroy - everything was already destroyed!"
   fi
