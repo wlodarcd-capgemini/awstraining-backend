@@ -130,9 +130,11 @@ else
       echo "Skipping EKS remote state bucket creation"
     else
       echo "Creating EKS remote state bucket"
-      terraform init
+      cd remote-state
+      terraform init -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
       terraform plan -out planfile -target aws_s3_bucket.remote_state -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
       terraform apply planfile
+      cd ..
     fi
 
     echo "Initialize"
