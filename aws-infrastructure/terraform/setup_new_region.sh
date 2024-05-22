@@ -119,11 +119,17 @@ else
   if [ "$TYPE" = "eks" ]; then
     echo "Creating EKS..."
     cd common/services/eks
+    echo "1.) Initialize"
     terraform init
+    echo "2.) Validate"
     terraform validate
+    echo "3.) Plan EKS"
     terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="region=$REGION" -var="aws_profile_name=$PROFILE" -var="state_bucket=$TF_STATE_BUCKET"
+    echo "4.) Apply EKS"
     terraform apply planfile
+    echo "5.) Plan"
     terraform plan -out planfile -var="region=$REGION" -var="aws_profile_name=$PROFILE" -var="state_bucket=$TF_STATE_BUCKET"
+    echo "6.) Apply"
     terraform apply planfile
   else
     echo "Creating ECS..."
