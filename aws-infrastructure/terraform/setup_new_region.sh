@@ -95,18 +95,14 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
     echo "Skipping destroy - everything was already destroyed!"
   fi
 else
-  if aws s3api head-bucket --bucket $TF_STATE_BUCKET --profile $PROFILE --region $REGION 2>/dev/null; then
-    echo "Skipping setup of the AWS infrastructure. State bucket already exists."
-  else
-    ./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
-    ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
-    ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
-    ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
-    ./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
-    ./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
-    ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
-    ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
-    ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
-    ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
-  fi
+  ./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
+  ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
+  ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
+  ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
+  ./$SCRIPT $PROFILE $REGION common/networking/securitygroups $ACTION
+  ./$SCRIPT $PROFILE $REGION common/monitoring/sns $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
+  ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
 fi
