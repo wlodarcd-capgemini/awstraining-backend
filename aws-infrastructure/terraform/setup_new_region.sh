@@ -119,7 +119,7 @@ else
   if [ "$TYPE" = "eks" ]; then
     echo "Creating EKS..."
     cd common/services/eks
-    terraform init -backend-config "bucket=$TF_STATE_BUCKET" -backend-config "key=eks" -backend-config "region=$REGION" -backend-config "profile=$PROFILE"
+    terraform init -backend-config "bucket=$TF_STATE_BUCKET" -var="region=$REGION" -var="aws_profile_name=$PROFILE" -backend-config "key=eks" -backend-config "region=$REGION" -backend-config "profile=$PROFILE"
     terraform validate
     terraform plan -out planfile -target module.vpc -target module.eks
     terraform apply planfile
