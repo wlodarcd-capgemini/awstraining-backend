@@ -125,20 +125,20 @@ else
   if [ "$TYPE" = "eks" ]; then
     cd common/services/eks
     echo "Creating EKS..."
-    echo "Initialize"
-    terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
-    echo "Validate"
-    terraform validate
-
     echo "Checking if $TF_STATE_BUCKET_EKS exists..."
     if aws s3api head-bucket --bucket $TF_STATE_BUCKET_EKS --profile $PROFILE --region $REGION 2>/dev/null; then
       echo "Skipping EKS remote state bucket creation"
     else
       echo "Creating EKS remote state bucket"
+      terraform init
       terraform plan -out planfile -target aws_s3_bucket.remote_state -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
       terraform apply planfile
     fi
 
+    echo "Initialize"
+    terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
+    echo "Validate"
+    terraform validate
     echo "Plan EKS"
     terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="region=$REGION" -var="aws_profile_name=$PROFILE"
     echo "Apply EKS"
