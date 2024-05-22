@@ -17,13 +17,6 @@ on:
         options:
           - 'ecs'
           - 'eks'
-      destroyRange:
-        description: Select destroy range
-        required: true
-        type: choice
-        options:
-          - 'only'
-          - 'full'
 
 jobs:
   properties:
@@ -66,4 +59,4 @@ jobs:
           cd aws-infrastructure/terraform
           chmod +x setup_new_region.sh
           chmod +x w2.sh
-          ./setup_new_region.sh w2.sh ${{ inputs.destroyType }} ${{ inputs.destroyRange }} ${{ env.AWS_PROFILE }} ${{ env.AWS_REGION }} destroy -auto-approve
+          ./setup_new_region.sh w2.sh ${{ inputs.destroyType }} ${{ env.AWS_PROFILE }} ${{ env.AWS_REGION }} destroy -auto-approve

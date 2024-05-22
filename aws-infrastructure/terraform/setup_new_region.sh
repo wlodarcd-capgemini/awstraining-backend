@@ -14,14 +14,14 @@ declare -A REGION_TO_HUB=(
 
 SCRIPT=$1
 TYPE=$2
-RANGE=$3
-PROFILE=$4
-REGION=$5
+PROFILE=$3
+REGION=$4
 # Get the corresponding hub from the associative array
 HUB="${REGION_TO_HUB[$REGION]}"
-ACTION=${@:6}
+ACTION=${@:5}
 
 TF_STATE_BUCKET="tf-state-${PROFILE}-${REGION}-${UNIQUE_BUCKET_STRING}"
+TF_STATE_BUCKET_EKS=$TF_STATE_BUCKET#-eks
 
 delete_tfstate_bucket() {
   aws s3api delete-objects \
@@ -30,6 +30,15 @@ delete_tfstate_bucket() {
       --profile $PROFILE \
       --region $REGION || true
   aws s3 rb s3://$TF_STATE_BUCKET --profile $PROFILE --region $REGION --force || true
+}
+
+delete_eks_tfstate_bucket() {
+  aws s3api delete-objects \
+      --bucket $TF_STATE_BUCKET_EKS \
+      --delete "$(aws s3api list-object-versions --bucket ${TF_STATE_BUCKET} --output=json --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" \
+      --profile $PROFILE \
+      --region $REGION || true
+  aws s3 rb s3://$TF_STATE_BUCKET_EKS --profile $PROFILE --region $REGION --force || true
 }
 
 delete_secrets_manager() {
@@ -54,21 +63,21 @@ delete_log_groups() {
   awk '{print $2}' | grep -v ^$ | while read x; do  echo "deleting $x" ; aws logs delete-log-group --log-group-name $x --region $REGION --profile $PROFILE; done || true
 }
 
-if [ "$#" -lt 6 ]; then
+if [ "$#" -lt 5 ]; then
   echo "Not enough arguments provided."
   echo
   echo "Script should be used in following form:"
   echo
-  echo "$0 SCRIPT TYPE RANGE PROFILE REGION ACTION"
+  echo "$0 SCRIPT TYPE PROFILE REGION ACTION"
   echo
   echo "example usage: "
   echo
-  echo "$0 setup_new_region.sh ecs full backend-test eu-central-1 plan"
+  echo "$0 setup_new_region.sh ecs backend-test eu-central-1 plan"
   echo
   echo "or: "
   echo
-  echo "$0 setup_new_region.sh eks only backend-test eu-central-1 apply"
-  echo "$0 setup_new_region.sh eks only backend-test eu-central-1 apply -auto-approve"
+  echo "$0 setup_new_region.sh eks backend-test eu-central-1 apply"
+  echo "$0 setup_new_region.sh eks backend-test eu-central-1 apply -auto-approve"
   echo
   echo "Apply will ask for your confirmation after each module."
   exit 1
@@ -79,15 +88,20 @@ rm common/*/*/.terraform/terraform.tfstate || true
 
 if [ "$ACTION" = "destroy -auto-approve" ]; then
   # Destroy infrastructure
-  echo "Checking if $TF_STATE_BUCKET exists..."
-  if aws s3api head-bucket --bucket $TF_STATE_BUCKET --profile $PROFILE --region $REGION 2>/dev/null; then
-
-    if [ "$TYPE" = "eks" ]; then
+  if [ "$TYPE" = "eks" ]; then
+    echo "Checking if $TF_STATE_BUCKET_EKS exists..."
+    if aws s3api head-bucket --bucket $TF_STATE_BUCKET_EKS --profile $PROFILE --region $REGION 2>/dev/null; then
       echo "Removing EKS..."
       cd common/services/eks
-      terraform init -backend-config "bucket=${TF_STATE_BUCKET}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
+      terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
       terraform destroy
+      delete_eks_tfstate_bucket
     else
+      echo "Skipping destroy - everything was already destroyed!"
+    fi
+  else
+    echo "Checking if $TF_STATE_BUCKET exists..."
+    if aws s3api head-bucket --bucket $TF_STATE_BUCKET --profile $PROFILE --region $REGION 2>/dev/null; then
       echo "Removing ECS..."
       delete_secrets_manager
       empty_ecr
@@ -99,48 +113,50 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
       ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
       ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
       ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
-      delete_log_groups
-    fi
-
-    # Full destroy of common files
-    if [ "$RANGE" = "full" ]; then
-      # Go back to main terraform directory
-      cd ../../..
-      echo "Removing common files (FULL destroy)"
       ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
       delete_tfstate_bucket
+      delete_log_groups
+    else
+      echo "Skipping destroy - everything was already destroyed!"
     fi
-
-  else
-    echo "Skipping destroy - everything was already destroyed!"
   fi
 else
   # Setup infrastructure
   # Common stuff
-  if aws s3api head-bucket --bucket $TF_STATE_BUCKET --profile $PROFILE --region $REGION 2>/dev/null; then
-    echo "Skipping remote state bucket creation"
-  else
-    ./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
-  fi
   ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
 
   if [ "$TYPE" = "eks" ]; then
-    echo "Creating EKS..."
     cd common/services/eks
-    echo "1.) Initialize"
-    terraform init -backend-config "bucket=${TF_STATE_BUCKET}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
-    echo "2.) Validate"
+    echo "Creating EKS..."
+    terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
     terraform validate
-    echo "3.) Plan EKS"
+
+    if aws s3api head-bucket --bucket $TF_STATE_BUCKET_EKS --profile $PROFILE --region $REGION 2>/dev/null; then
+      echo "Skipping EKS remote state bucket creation"
+    else
+      echo "Creating EKS remote state bucket"
+      terraform plan -out planfile -target aws_s3_bucket.remote_state -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
+      terraform apply planfile
+    fi
+
+    echo "Plan EKS"
     terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="region=$REGION" -var="aws_profile_name=$PROFILE"
-    echo "4.) Apply EKS"
+    echo "Apply EKS"
     terraform apply planfile
-    echo "5.) Plan"
+    echo "Plan"
     terraform plan -out planfile -var="region=$REGION" -var="aws_profile_name=$PROFILE"
-    echo "6.) Apply"
+    echo "Apply"
     terraform apply planfile
   else
     echo "Creating ECS..."
+
+    if aws s3api head-bucket --bucket $TF_STATE_BUCKET --profile $PROFILE --region $REGION 2>/dev/null; then
+      echo "Skipping ECS remote state bucket creation"
+    else
+      echo "Creating ECS remote state bucket"
+      ./$SCRIPT $PROFILE $REGION common/general/create-remote-state-bucket $ACTION
+    fi
+
     ./$SCRIPT $PROFILE $REGION common/general/dynamo-lock $ACTION
     ./$SCRIPT $PROFILE $REGION environments/$PROFILE/$HUB/$REGION/globals $ACTION
     ./$SCRIPT $PROFILE $REGION common/networking/vpc $ACTION
