@@ -149,7 +149,6 @@ else
     terraform apply planfile
   else
     echo "Creating ECS..."
-
     if aws s3api head-bucket --bucket $TF_STATE_BUCKET --profile $PROFILE --region $REGION 2>/dev/null; then
       echo "Skipping ECS remote state bucket creation"
     else
@@ -165,5 +164,6 @@ else
     ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
     ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
     ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
+    ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
   fi
 fi
