@@ -9,30 +9,56 @@
 
 First generate AWS cli credentials on your AWS account and then configure the credentials on your system
 
-> aws configure --profile training
+```
+aws configure --profile training
+```
+
+This is the same profile that you have to provide as input when running Terraform.
 
 ## Provision infrastructure
+### Remote state bucket
+First, go to ```common/remote-state-bucket``` directory and run:
 
-First update the `terraform.tfvars` file to put your desired configurations
+```
+terraform init
+```
+This will initialize the bucket creation project.
 
-Download and install provider and modules
-> terraform init
+Then, run:
 
-Validate infrastructure configurations
-> terraform validate
+```
+terraform apply
+```
 
-Plan VPC and EKS cluster
-> terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next
+and provide name of the bucket that will be later used as a remote state (backend)
+for EKS resources.
 
-Create VPC and EKS cluster
->terraform apply planfile
+### EKS and Helm
+Got to ```common/cluster``` directory.
 
-Plan EKS cluster nodes
-> terraform plan -out planfile
+Initialize the project to pull all the modules used
 
-Create EKS cluster nodes
-> terraform apply planfile
+```
+terraform init
+```
 
-## Destroying infrastructure
+Validate that the project is correctly setup.
 
-> terraform destroy
+```
+terraform validate
+```
+
+Run the plan command to see all the resources that will be created
+
+```
+terraform plan
+```
+
+When you ready, run the apply command to create the resources.
+
+```
+terraform apply
+```
+
+Take a look at the outputs to get your cluster endpoint and other details.
+Verify in your AWS account if the cluster has been created.
