@@ -88,11 +88,13 @@ and create two repository secrets:
 * BACKEND_EMEA_TEST_AWS_KEY
 * BACKEND_EMEA_TEST_AWS_SECRET
 
-and set accordingly **AWS_KEY** and **AWS_SECRET**, same as in ```..\.aws\credentials```.
+and set accordingly **AWS_KEY** and **AWS_SECRET**, same as locally in ```..\.aws\credentials```.
 
 ## Running provisioning workflow
 Then, you should run ```provisionWithTerraform``` pipeline under **Actions** tab.
 This will automatically provision AWS infrastructure.
+
+You can choose either **ecs** or **eks**, depending on which infrastructure you want to deploy.
 
 ## Configuring secrets in AWS
 In order for our application to be able to access AWS Secrets Manager containing credentials for basic auth, please 

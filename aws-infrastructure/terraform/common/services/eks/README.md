@@ -11,7 +11,7 @@ First generate AWS cli credentials on your AWS account and then configure the cr
 
 > aws configure --profile training
 
-## Provision infrastructure
+## Provision infrastructure (locally)
 
 ### Remote state bucket
 You need to first go to ```remote-state-bucket/``` directory and run
@@ -51,6 +51,24 @@ Plan EKS cluster nodes
 Create EKS cluster nodes
 > terraform apply planfile
 
-## Destroying infrastructure
+### Destroying infrastructure
 
+Go to ```cluster/``` directory and run
 > terraform destroy
+
+At the end go to S3 and empty state bucket and remove it.
+
+## Provision infrastructure (GitHub)
+First you should go to **GitHub -> Your fork repo -> Settings -> Secrets and variables**
+and create two repository secrets:
+* BACKEND_EMEA_TEST_AWS_KEY
+* BACKEND_EMEA_TEST_AWS_SECRET
+
+and set accordingly **AWS_KEY** and **AWS_SECRET**, same as locally in ```..\.aws\credentials```.
+
+Then, you should run ```provisionWithTerraform``` pipeline under **Actions** tab.
+This will automatically provision AWS infrastructure. Choose **eks** as deployment type.
+
+### Destroying infrastructure (GitHub)
+In order to destroy your infrastructure you can simply call the **Destroy Infrastructure**
+workflow in GitHub. Choose **eks** as deployment type. It will do the whole work for you.
