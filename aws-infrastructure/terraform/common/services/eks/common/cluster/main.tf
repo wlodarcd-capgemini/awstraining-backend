@@ -7,6 +7,7 @@ module "vpc" {
 
   main-region = var.region
   profile     = var.profile
+  azs         = local.azs
 }
 
 ################################################################################
