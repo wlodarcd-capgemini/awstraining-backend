@@ -59,7 +59,9 @@ Go to ```cluster/``` directory and run
 At the end go to S3 and empty state bucket and remove it.
 
 ## Provision infrastructure (GitHub)
-First you should go to **GitHub -> Your fork repo -> Settings -> Secrets and variables**
+First, you should fork this repository to your account.
+
+Then, you should go to **GitHub -> Your fork repo -> Settings -> Secrets and variables**
 and create two repository secrets:
 * BACKEND_EMEA_TEST_AWS_KEY
 * BACKEND_EMEA_TEST_AWS_SECRET
