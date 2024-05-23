@@ -141,6 +141,10 @@ else
       cd ..
     fi
 
+    # This is only needed if we re-run the workflow (after some errors)
+    echo "Loading Kubernetes config from EKS (if exists)"
+    aws eks update-kubeconfig --name backend-eks --profile $PROFILE --region $REGION || true
+
     cd cluster
     terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var="region=$REGION" -var="profile=$PROFILE"
     terraform validate
