@@ -132,6 +132,8 @@ else
     else
       echo "Creating EKS remote state bucket"
       cd remote-state-bucket
+      echo "My current path"
+      pwd
       terraform init -var="name=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="profile=$PROFILE"
       terraform apply -var="name=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="profile=$PROFILE" -auto-approve
       cd ..
