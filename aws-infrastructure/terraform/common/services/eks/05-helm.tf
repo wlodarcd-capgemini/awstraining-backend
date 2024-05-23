@@ -1,10 +1,10 @@
 data "aws_eks_cluster_auth" "cluster_auth" {
   depends_on = [ module.eks ]
-  name       = module.eks.cluster_name
+  name       = var.eks_cluster_name
 }
 
 provider "helm" {
-  alias = module.eks.cluster_name
+  alias = var.eks_cluster_name
   kubernetes {
     host                   = module.eks.cluster_endpoint
     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
