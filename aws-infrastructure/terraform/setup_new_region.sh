@@ -92,7 +92,7 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
     echo "Checking if $TF_STATE_BUCKET_EKS exists..."
     if aws s3api head-bucket --bucket $TF_STATE_BUCKET_EKS --profile $PROFILE --region $REGION 2>/dev/null; then
       echo "Removing EKS..."
-      cd common/services/eks/cluster
+      cd common/services/eks/common/cluster
 
       terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var profile=${PROFILE} -var region=${REGION}
       terraform destroy -var="region=$REGION" -var="profile=$PROFILE"
