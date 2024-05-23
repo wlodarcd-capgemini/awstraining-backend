@@ -95,7 +95,7 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
       cd common/services/eks/common/cluster
 
       terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var profile=${PROFILE} -var region=${REGION}
-      terraform destroy -var="region=$REGION" -var="profile=$PROFILE"
+      terraform destroy -var="region=$REGION" -var="profile=$PROFILE" -auto-approve
       delete_eks_tfstate_bucket
     else
       echo "Skipping destroy - everything was already destroyed!"
