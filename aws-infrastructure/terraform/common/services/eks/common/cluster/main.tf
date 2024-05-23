@@ -5,7 +5,7 @@
 module "vpc" {
   source = "../../modules/vpc"
 
-  main-region = var.region
+  region = var.region
   profile     = var.profile
   azs         = local.azs
 }
@@ -17,7 +17,7 @@ module "vpc" {
 module "eks" {
   source = "../../modules/eks-cluster"
 
-  main-region = var.region
+  region = var.region
   profile     = var.profile
   #rolearn     = var.rolearn
 
@@ -32,7 +32,7 @@ module "eks" {
 module "aws_alb_controller" {
   source = "../../modules/aws-alb-controller"
 
-  main-region  = var.region
+  region  = var.region
   env_name     = var.env_name
   cluster_name = var.cluster_name
 

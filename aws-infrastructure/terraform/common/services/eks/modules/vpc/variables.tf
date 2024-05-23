@@ -5,7 +5,7 @@ variable "profile" {
   type    = string
 }
 
-variable "main-region" {
+variable "region" {
   type    = string
 }
 
