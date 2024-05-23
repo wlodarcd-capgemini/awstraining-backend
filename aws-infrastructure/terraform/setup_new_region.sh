@@ -35,7 +35,7 @@ delete_tfstate_bucket() {
 delete_eks_tfstate_bucket() {
   aws s3api delete-objects \
       --bucket $TF_STATE_BUCKET_EKS \
-      --delete "$(aws s3api list-object-versions --bucket ${TF_STATE_BUCKET} --output=json --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" \
+      --delete "$(aws s3api list-object-versions --bucket ${TF_STATE_BUCKET_EKS} --output=json --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" \
       --profile $PROFILE \
       --region $REGION || true
   aws s3 rb s3://$TF_STATE_BUCKET_EKS --profile $PROFILE --region $REGION --force || true
@@ -98,7 +98,7 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
       aws eks update-kubeconfig --name backend-eks --profile $PROFILE --region $REGION
 
       terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var profile=${PROFILE} -var region=${REGION}
-      terraform destroy -var="region=$REGION" -var="profile=$PROFILE"
+      terraform destroy -var="region=$REGION" -var="profile=$PROFILE" -auto-approve
       delete_eks_tfstate_bucket
     else
       echo "Skipping destroy - everything was already destroyed!"
