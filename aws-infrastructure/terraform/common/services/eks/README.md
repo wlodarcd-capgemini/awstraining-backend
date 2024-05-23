@@ -13,6 +13,24 @@ First generate AWS cli credentials on your AWS account and then configure the cr
 
 ## Provision infrastructure
 
+### Remote state bucket
+You need to first go to ```remote-state-bucket/``` directory and run
+
+```
+terraform init
+```
+
+and
+
+```
+terraform apply
+```
+
+To create a S3 remote state bucket. This state bucket will be used for saving Terraform state.
+
+### EKS Cluster
+Go to ```cluster/``` directory.
+
 First update the `terraform.tfvars` file to put your desired configurations
 
 Download and install provider and modules

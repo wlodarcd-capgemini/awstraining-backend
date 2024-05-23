@@ -92,12 +92,13 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
     echo "Checking if $TF_STATE_BUCKET_EKS exists..."
     if aws s3api head-bucket --bucket $TF_STATE_BUCKET_EKS --profile $PROFILE --region $REGION 2>/dev/null; then
       echo "Removing EKS..."
-      cd common/services/eks
+      cd common/services/eks/cluster
 
+      echo "Loading Kubernetes config from EKS"
       aws eks update-kubeconfig --name backend-eks --profile $PROFILE --region $REGION
 
-      terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var aws_profile_name=${PROFILE} -var region=${REGION}
-      terraform destroy -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
+      terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var profile=${PROFILE} -var region=${REGION}
+      terraform destroy -var="region=$REGION" -var="profile=$PROFILE"
       delete_eks_tfstate_bucket
     else
       echo "Skipping destroy - everything was already destroyed!"
@@ -133,27 +134,19 @@ else
       echo "Skipping EKS remote state bucket creation"
     else
       echo "Creating EKS remote state bucket"
-      cd remote-state
-      terraform init -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
-      terraform plan -out planfile -target aws_s3_bucket.remote_state -var="remote_state_bucket=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
+      cd remote-state-bucket
+      terraform init -var="name=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="profile=$PROFILE"
+      terraform plan -out planfile -target aws_s3_bucket.remote_state -var="name=$TF_STATE_BUCKET_EKS" -var="region=$REGION" -var="profile=$PROFILE"
       terraform apply planfile
       cd ..
     fi
 
-    echo "Initialize"
-    echo "Path:"
-    pwd
-
-    terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var="remote_state_bucket=${TF_STATE_BUCKET_EKS}" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
-    echo "Validate"
+    cd cluster
+    terraform init -backend-config "bucket=${TF_STATE_BUCKET_EKS}" -backend-config "key=eks" -backend-config "region=${REGION}" -backend-config "profile=${PROFILE}" -var="region=$REGION" -var="profile=$PROFILE"
     terraform validate
-    echo "Plan EKS"
-    terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="remote_state_bucket=${TF_STATE_BUCKET_EKS}" -var="region=$REGION" -var="aws_profile_name=$PROFILE"
-    echo "Apply EKS"
+    terraform plan -out planfile -target module.vpc -target module.eks -target null_resource.next -var="region=$REGION" -var="profile=$PROFILE"
     terraform apply planfile
-    echo "Plan"
-    terraform plan -out planfile -var remote_state_bucket=${TF_STATE_BUCKET_EKS} -var="region=$REGION" -var="aws_profile_name=$PROFILE"
-    echo "Apply"
+    terraform plan -out planfile -var="region=$REGION" -var="profile=$PROFILE"
     terraform apply planfile
   else
     echo "Creating ECS..."

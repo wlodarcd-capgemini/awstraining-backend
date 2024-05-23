@@ -2,10 +2,10 @@ variable "region" {
   type = string
 }
 
-variable "remote_state_bucket" {
+variable "name" {
   type = string
 }
 
-variable "aws_profile_name" {
+variable "profile" {
   type = string
 }

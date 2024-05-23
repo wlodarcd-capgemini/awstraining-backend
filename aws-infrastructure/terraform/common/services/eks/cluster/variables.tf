@@ -6,7 +6,7 @@ variable "remote_state_bucket" {
   type = string
 }
 
-variable "aws_profile_name" {
+variable "profile" {
   type = string
 }
 
