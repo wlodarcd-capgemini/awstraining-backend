@@ -1,18 +1,3 @@
-data "aws_eks_cluster_auth" "cluster_auth" {
-  depends_on = [ module.eks ]
-  name       = var.eks_cluster_name
-}
-
-provider "helm" {
-  alias = var.eks_cluster_name
-  kubernetes {
-    host                   = module.eks.cluster_endpoint
-    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-    token                  = data.aws_eks_cluster_auth.cluster_auth.token
-    load_config_file       = false
-  }
-}
-
 resource "aws_iam_policy" "eks_lb_controller_policy" {
   depends_on  = [null_resource.next, module.eks_managed_node_group]
   name        = "AmazonEKSLoadBalancerControllerPolicy"
@@ -102,38 +87,5 @@ resource "helm_release" "aws_lb_controller" {
   set {
     name  = "region"
     value = var.region
-  }
-}
-
-resource "helm_release" "aws_ebs_csi_driver" {
-  depends_on = [null_resource.next, module.eks_managed_node_group]
-  name       = "aws-ebs-csi-driver"
-  chart      = "aws-ebs-csi-driver"
-  namespace  = "kube-system"
-  version    = "2.28.1"
-  repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
-
-  set {
-    name  = "controller.serviceAccount.name"
-    value = "ebs-csi-controller-sa"
-  }
-
-  set {
-    name  = "enableVolumeResizing"
-    value = true
-  }
-  set {
-    name  = "enableVolumeSnapshot"
-    value = false
-  }
-
-  set {
-    name  = "serviceAccount.controller.create"
-    value = false
-  }
-
-  set {
-    name  = "serviceAccount.controller.name"
-    value = "ebs-csi-eks"
   }
 }
