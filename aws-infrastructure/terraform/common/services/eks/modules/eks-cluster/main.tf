@@ -9,10 +9,6 @@ module "eks" {
   cluster_name    = "tf-cluster"
   cluster_version = "1.27"
 
-  providers = {
-    aws = aws.us-east-2
-  }
-
   cluster_endpoint_public_access = true
 
   create_kms_key              = false
