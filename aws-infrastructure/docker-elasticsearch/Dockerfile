@@ -11,6 +11,7 @@ EXPOSE 9300
 COPY elasticsearch.yml /usr/share/elasticsearch/config
 
 COPY run.sh .
+RUN chmod +x run.sh
 
 # Provide a helpful comment for usage instructions
 # To build the Docker image:
