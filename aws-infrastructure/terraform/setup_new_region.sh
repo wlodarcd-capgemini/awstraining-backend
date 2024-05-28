@@ -120,8 +120,8 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
       empty_ecr
       empty_monitoring_ecr
       # Monitoring (Elasticsearch, Filebeat, Kibana, Prometheus, Grafana)
-      ./$SCRIPT $PROFILE $REGION common/services/ecs-monitoring-service $ACTION
-      ./$SCRIPT $PROFILE $REGION common/services/ecs-monitoring-cluster $ACTION
+      ./$SCRIPT $PROFILE $REGION common/monitoring/ecs-monitoring-service $ACTION
+      ./$SCRIPT $PROFILE $REGION common/monitoring/ecs-monitoring-cluster $ACTION
 
       ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
       ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
@@ -185,8 +185,8 @@ else
     ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
 
     # Monitoring (Elasticsearch, Filebeat, Kibana, Prometheus, Grafana)
-    ./$SCRIPT $PROFILE $REGION common/services/ecs-monitoring-cluster $ACTION
-    ./$SCRIPT $PROFILE $REGION common/services/ecs-monitoring-service $ACTION
+    ./$SCRIPT $PROFILE $REGION common/monitoring/ecs-monitoring-cluster $ACTION
+    ./$SCRIPT $PROFILE $REGION common/monitoring/ecs-monitoring-service $ACTION
 
     ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
   fi
