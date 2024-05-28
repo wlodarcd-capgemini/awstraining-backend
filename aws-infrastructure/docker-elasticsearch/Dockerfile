@@ -29,4 +29,8 @@ RUN chmod +x run.sh
 
 # Start Elasticsearch when the container starts
 #ENTRYPOINT  [ "bin/elasticsearch" ]
+
+# Go back to standard user, as elasticsearch cannot be ran as root
+USER 1000
+
 ENTRYPOINT [ "./run.sh" ]
