@@ -2,7 +2,6 @@ data "template_file" "service_template" {
   template = file("../../../templates/monitoring-container-definition.json.tpl")
 
   vars = {
-    elasticsearch_url = var.elasticsearch_url
     log_group = aws_cloudwatch_log_group.ecs_monitoring_log_group.name
     region = var.region
     ecr_url = var.ecr_repository_url
