@@ -7,6 +7,9 @@ VOLUME /usr/share/elasticsearch/data
 EXPOSE 9200
 EXPOSE 9300
 
+# Switch to root
+USER 0
+
 # copy the configuration file into the container
 COPY elasticsearch.yml /usr/share/elasticsearch/config
 
