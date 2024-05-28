@@ -58,6 +58,15 @@ empty_ecr() {
       --image-ids "$(aws ecr list-images --region $REGION --profile $PROFILE --repository-name $ECR_REPOSITORY --query 'imageIds[*]' --output json)" || true
 }
 
+empty_monitoring_ecr() {
+  ECR_MONITORING_REPOSITORY="monitoring"
+  aws ecr batch-delete-image \
+      --repository-name $ECR_MONITORING_REPOSITORY \
+      --profile $PROFILE \
+      --region $REGION \
+      --image-ids "$(aws ecr list-images --region $REGION --profile $PROFILE --repository-name $ECR_MONITORING_REPOSITORY --query 'imageIds[*]' --output json)" || true
+}
+
 delete_log_groups() {
   aws logs describe-log-groups --query 'logGroups[*].logGroupName' --output table --region $REGION --profile $PROFILE | \
   awk '{print $2}' | grep -v ^$ | while read x; do  echo "deleting $x" ; aws logs delete-log-group --log-group-name $x --region $REGION --profile $PROFILE; done || true
@@ -109,6 +118,11 @@ if [ "$ACTION" = "destroy -auto-approve" ]; then
       echo "Removing ECS..."
       delete_secrets_manager
       empty_ecr
+      empty_monitoring_ecr
+      # Monitoring (Elasticsearch, Filebeat, Kibana, Prometheus, Grafana)
+      ./$SCRIPT $PROFILE $REGION common/services/ecs-monitoring-service $ACTION
+      ./$SCRIPT $PROFILE $REGION common/services/ecs-monitoring-cluster $ACTION
+
       ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
       ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
       ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
@@ -169,6 +183,11 @@ else
     ./$SCRIPT $PROFILE $REGION common/services/ecr $ACTION
     ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-cluster $ACTION
     ./$SCRIPT $PROFILE $REGION common/services/ecs-backend-service $ACTION
+
+    # Monitoring (Elasticsearch, Filebeat, Kibana, Prometheus, Grafana)
+    ./$SCRIPT $PROFILE $REGION common/services/ecs-monitoring-cluster $ACTION
+    ./$SCRIPT $PROFILE $REGION common/services/ecs-monitoring-service $ACTION
+
     ./$SCRIPT $PROFILE $REGION common/services/measurements-dynamodb $ACTION
   fi
 fi
