@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "ecs_monitoring_task" {
   execution_role_arn = data.aws_iam_role.backend_ecs_role.arn
   task_role_arn = data.aws_iam_role.backend_monitoring_ecs_role.arn
   requires_compatibilities = ["FARGATE"]
-  memory = "4096"
+  memory = "8192"
   cpu = "2048"
 
   tags = var.common_tags

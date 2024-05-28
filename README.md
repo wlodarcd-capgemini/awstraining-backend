@@ -46,6 +46,8 @@ stay empty.
 
 Finally, simply run Application in IntelliJ with 'Run' button.
 
+Kibana user is "elastic" and password is "changeme".
+
 # Preparation to the deployment
 To deploy infrastructure to your sandbox account please first fork our base repository.
 To do it, go to:
