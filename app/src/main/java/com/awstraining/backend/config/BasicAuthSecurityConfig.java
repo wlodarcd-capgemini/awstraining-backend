@@ -44,7 +44,7 @@ public class BasicAuthSecurityConfig {
                 // disable csrf to enable POST, PUT, DELETE requests
                 // https://docs.spring.io/spring-security/site/docs/current/reference/html/features.html#csrf-when
                 .authorizeRequests()
-                .antMatchers("/backend/**").hasAnyRole(USER)
+                .antMatchers("/device/**").hasAnyRole(USER)
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
