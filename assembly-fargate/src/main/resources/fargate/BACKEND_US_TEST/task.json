@@ -1,6 +1,6 @@
 {
   "family": "backend-task-test",
-  "executionRoleArn": "arn:aws:iam::<<ACCOUNT_ID>>:role/backend-ecs-execution-role-us-east-1",
+  "executionRoleArn": "arn:aws:iam::513741763509:role/backend-ecs-execution-role-us-east-1",
   "containerDefinitions": [
     {
       "logConfiguration": {
@@ -40,14 +40,14 @@
       ],
       "secrets": [
         {
-          "valueFrom": "<<TODO: set ARN of secrets manager>>",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:513741763509:secret:backend-secretsmanager-test-eu-central-1-jVgGIZ",
           "name": "SPRING_APPLICATION_JSON"
         }
       ],
       "cpu": 1024,
       "memory": 2048,
       "memoryReservation": 1024,
-      "image": "<<TODO: set ECR image address>>",
+      "image": "513741763509.dkr.ecr.eu-central-1.amazonaws.com/backend:latest",
       "dockerLabels": {
         "PROMETHEUS_EXPORTER_PORT": "8081",
         "PROMETHEUS_EXPORTER_PATH": "/backend/status/v1/prometheus",
