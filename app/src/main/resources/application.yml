@@ -18,7 +18,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: [ "prometheus", "health" ]
+        include: ["prometheus", "health"]
 
 aws:
 #  region: eu-central-1
