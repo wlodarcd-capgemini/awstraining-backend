@@ -2,7 +2,6 @@ data "template_file" "service_template" {
   template = file("../../../templates/monitoring-container-definition.json.tpl")
 
   vars = {
-    elasticsearch_url = var.elasticsearch_url
     log_group = aws_cloudwatch_log_group.ecs_monitoring_log_group.name
     region = var.region
     ecr_url = var.ecr_repository_url
@@ -24,7 +23,7 @@ resource "aws_ecs_task_definition" "ecs_monitoring_task" {
   execution_role_arn = data.aws_iam_role.backend_ecs_role.arn
   task_role_arn = data.aws_iam_role.backend_monitoring_ecs_role.arn
   requires_compatibilities = ["FARGATE"]
-  memory = "4096"
+  memory = "8192"
   cpu = "2048"
 
   tags = var.common_tags

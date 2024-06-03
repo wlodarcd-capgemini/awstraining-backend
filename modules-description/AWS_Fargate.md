@@ -3,7 +3,8 @@
 * 8h
 
 ## Entry requirements
-* Completion of **AWS Basics** training
+* Completion of an AWS Basics module or equivalent knowledge
+    * Note: You may want to check the contents of the AWS Basics module to confirm whether you are familiar with the concepts presented in this training
 * Creation of AWS Sandbox account & Initial login to AWS
 * Creation of IAM technical user and credentials
 * Creation of GitHub account
