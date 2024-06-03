@@ -7,10 +7,14 @@ VOLUME /usr/share/elasticsearch/data
 EXPOSE 9200
 EXPOSE 9300
 
+# Switch to root
+USER 0
+
 # copy the configuration file into the container
 COPY elasticsearch.yml /usr/share/elasticsearch/config
 
 COPY run.sh .
+RUN chmod +x run.sh
 
 # Provide a helpful comment for usage instructions
 # To build the Docker image:
@@ -25,4 +29,8 @@ COPY run.sh .
 
 # Start Elasticsearch when the container starts
 #ENTRYPOINT  [ "bin/elasticsearch" ]
+
+# Go back to standard user, as elasticsearch cannot be ran as root
+USER 1000
+
 ENTRYPOINT [ "./run.sh" ]
