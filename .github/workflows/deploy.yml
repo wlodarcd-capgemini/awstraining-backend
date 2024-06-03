@@ -33,11 +33,6 @@ on:
         type: boolean
         required: false
         default: false
-      skipIntegrationTests:
-        description: Should skip integration tests?
-        type: boolean
-        required: false
-        default: false
 
 jobs:
   sourceProperties:
@@ -65,7 +60,6 @@ jobs:
       DESTINATION_SERVICE_NAME: ${{ needs.destinationProperties.outputs.SERVICE_NAME }}
       DESTINATION_TASK_NAME: ${{ needs.destinationProperties.outputs.TASK_NAME }}
       SKIP_SMOKE_TESTS: ${{ (github.event.inputs.skipSmokeTests != null && github.event.inputs.skipSmokeTests == 'true') || 'false' }}
-      SKIP_INTEGRATION_TESTS: ${{ (github.event.inputs.skipIntegrationTests != null && github.event.inputs.skipIntegrationTests == 'true') || 'false' }}
       SOURCE_AWS_KEY:  ${{ secrets[format('{0}_AWS_KEY', github.event.inputs.sourceHubEnv)] }}
       SOURCE_AWS_SECRET: ${{ secrets[format('{0}_AWS_SECRET', github.event.inputs.sourceHubEnv)] }}
       DESTINATION_AWS_KEY: ${{ secrets[format('{0}_AWS_KEY', github.event.inputs.destinationHubEnv)] }}

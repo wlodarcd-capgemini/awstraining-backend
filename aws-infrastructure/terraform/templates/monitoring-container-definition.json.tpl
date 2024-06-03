@@ -79,8 +79,8 @@
   {
     "name": "kibana",
     "image": "${ecr_url}:kibana",
-    "memoryReservation": 256,
-    "memory": 512,
+    "memoryReservation": 512,
+    "memory": 1024,
     "cpu": 256,
     "essential": true,
     "logConfiguration": {
