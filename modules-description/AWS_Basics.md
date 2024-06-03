@@ -12,22 +12,22 @@
 * Gain **first hands-on experience** with AWS services using AWS Console, CLI and SDK
 
 ## Program
-* Welcome & Sandbox account testing​
+* Welcome & Sandbox account testing
 * Introduction to Cloud & AWS
 * IAM Introduction & Hands-on
-* Setup local environment​
+* Setup local environment
 * Introduction to classic Spring Boot backend application that will be deployed during the training
-* VPC Introduction & Hands-on​
-* S3 Introduction & Hands-on​
-* EC2 Introduction & Hands-on​
+* VPC Introduction & Hands-on
+* S3 Introduction & Hands-on
+* EC2 Introduction & Hands-on
 * RDS Introduction
-* DynamoDB Introduction & Hands-on​
-* Lambda Introduction & Hands-on​
-* CloudWatch Introduction & Hands-on​
-* ECS Fargate Introduction & Hands-on​
+* DynamoDB Introduction & Hands-on
+* Lambda Introduction & Hands-on
+* CloudWatch Introduction & Hands-on
+* ECS Fargate Introduction & Hands-on
 * Load balancer Hands-on
 * Cloud9 Hands-on
-* Summary & questions​
+* Summary & questions
 * Infrastructure clean-up
 
 ## Disclaimers
