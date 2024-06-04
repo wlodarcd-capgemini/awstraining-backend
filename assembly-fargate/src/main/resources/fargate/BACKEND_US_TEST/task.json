@@ -40,14 +40,14 @@
       ],
       "secrets": [
         {
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:<<ACCOUNT_ID>>:secret:backend-secretsmanager-test-eu-central-1-jVgGIZ",
+          "valueFrom": "<<TODO: set ARN of US secrets manager>>",
           "name": "SPRING_APPLICATION_JSON"
         }
       ],
       "cpu": 1024,
       "memory": 2048,
       "memoryReservation": 1024,
-      "image": "<<ACCOUNT_ID>>.dkr.ecr.eu-central-1.amazonaws.com/backend:latest",
+      "image": "<<ACCOUNT_ID>>.dkr.ecr.us-east-1.amazonaws.com/backend:latest",
       "dockerLabels": {
         "PROMETHEUS_EXPORTER_PORT": "8081",
         "PROMETHEUS_EXPORTER_PATH": "/backend/status/v1/prometheus",
