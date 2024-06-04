@@ -31,8 +31,8 @@ jobs:
     env:
       AWS_ACCOUNT: ${{ needs.properties.outputs.AWS_ACCOUNT }}
       AWS_PROFILE: ${{ needs.properties.outputs.PROFILE }}
-      AWS_KEY:  ${{ secrets.BACKEND_EMEA_TEST_AWS_KEY }}
-      AWS_SECRET: ${{ secrets.BACKEND_EMEA_TEST_AWS_SECRET }}
+      AWS_KEY:  ${{ secrets[format('{0}_AWS_KEY', inputs.hubEnv)] }}
+      AWS_SECRET: ${{ secrets[format('{0}_AWS_SECRET', inputs.hubEnv)] }}
       AWS_REGION: ${{ needs.properties.outputs.REGION }}
 
     steps:
@@ -54,6 +54,7 @@ jobs:
           echo "[${{ env.AWS_PROFILE }}]" > ~/.aws/credentials
           echo "aws_access_key_id = ${{ env.AWS_KEY }}" >> ~/.aws/credentials
           echo "aws_secret_access_key = ${{ env.AWS_SECRET }}" >> ~/.aws/credentials
+
       - name: Run Terraform apply
         run: |
           cd aws-infrastructure/terraform
