@@ -29,13 +29,37 @@
 **Prerequisites**
 
 1. Check if the load test infrastructure is created - if not, run terraform scripts
-    
-**Build and push image to ECR**
 
-    
-**Start load test**
+```
+./w2.sh [PROFILE] [REGION] common/services/ecs-loadtests apply
+```
 
-1. Force new service deployment in backend-loadtest cluster
+2. Build load test image (in ```loadtest```) directory
+```
+mvn clean install
+```
+
+3. Dockerize load test app and push to ECR
+
+```
+aws ecr get-login-password --region eu-central-1 --profile [PROFILE] | docker login --username AWS --password-stdin <<ACCOUNT_ID>>.dkr.ecr.eu-central-1.amazonaws.com
+```
+
+```
+docker build -t backend-loadtest .
+```
+
+```
+docker tag backend-loadtest:latest <<ACCOUNT_ID>>.dkr.ecr.eu-central-1.amazonaws.com/backend-loadtest:latest
+```
+
+```
+docker push <<ACCOUNT_ID>>.dkr.ecr.eu-central-1.amazonaws.com/backend-loadtest:latest
+```
+
+4. Force new service deployment in backend-loadtest cluster
+
+If needed you can adjust task definition to set up specific load test parameters.
 
  
    

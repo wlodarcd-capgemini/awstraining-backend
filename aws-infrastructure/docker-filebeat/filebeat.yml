@@ -24,4 +24,3 @@ output.elasticsearch:
   username: elastic
   password: changeme
   ssl.enabled: false
-  
