@@ -33,7 +33,6 @@ ${jsonencode(
         "arn:aws:ssm:${region}:${account_id}:parameter/config/backend*"
       ]
     },
-    <!-- Lab2: Add statement, which allow your application translate text using translate service -->
     {
       "Action": [
         "translate:TranslateText"
@@ -41,8 +40,6 @@ ${jsonencode(
       "Effect": "Allow",
       "Resource": "*"
     },
-    <!-- Lab3: Add statement, which allow your application detect sentiment using comprehend service -->
-    <!-- Lab1: Add statement, which allow your application to publish messages on all topics using sns service -->
     {
       "Effect": "Allow",
       "Action": [
