@@ -57,8 +57,10 @@
       "name": "backend"
     }
   ],
-  "taskRoleArn": "<<TODO: set task role ARN>>",
-  "requiresCompatibilities": ["FARGATE"],
+  "taskRoleArn": "arn:aws:iam::<<ACCOUNT_ID>>:role/backend-ecs-task-role-eu-central-1",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
   "networkMode": "awsvpc",
   "memory": "2048",
   "cpu": "1024"
