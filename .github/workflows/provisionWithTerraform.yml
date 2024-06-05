@@ -29,8 +29,8 @@ jobs:
     needs: properties
     env:
       AWS_PROFILE: ${{ needs.properties.outputs.PROFILE }}
-      AWS_KEY:  ${{ secrets.BACKEND_EMEA_TEST_AWS_KEY }}
-      AWS_SECRET: ${{ secrets.BACKEND_EMEA_TEST_AWS_SECRET }}
+      AWS_KEY:  ${{ secrets[format('{0}_AWS_KEY', inputs.hubEnv)] }}
+      AWS_SECRET: ${{ secrets[format('{0}_AWS_SECRET', inputs.hubEnv)] }}
       AWS_REGION: ${{ needs.properties.outputs.REGION }}
     steps:
       - name: Checkout
