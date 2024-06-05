@@ -54,26 +54,6 @@ jobs:
         with:
           maven-version: 3.8.2
 
-      - name: Cache local Maven repository
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      # Extract branch name from GITHUB_REF environment variable, which be default is in the format "refs/heads/<branch-name>"
-      # e.g. extracts refs/heads/<branch-name> -> <branch-name>
-      - name: Extract branch name
-        if: ${{ env.SKIP_SONAR == 'false' && !github.base_ref }}
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-
-      - name: Display built branch in summary
-        if: always()
-        run: |
-          echo "### Built branch ${{ steps.extract_branch.outputs.branch }}" >> $GITHUB_STEP_SUMMARY
-
       - name: Build
         run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report
 
