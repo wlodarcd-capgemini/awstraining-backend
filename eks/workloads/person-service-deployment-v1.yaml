@@ -15,26 +15,26 @@ spec:
         app: person-service
     spec:
       containers:
-        - image: quay.io/ksobkowiak/person-service:latest
+        - image: quay.io/ksobkowiak/eks-wks-person-service:latest
           name: person-service
           env:
             - name: DB_DB
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   key: db
-                  name: person-db
+                  name: person-configmap
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: password
-                  name: person-db
+                  name: person-secret
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   key: user
-                  name: person-db
+                  name: person-secret
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
                   key: host
-                  name: person-db
+                  name: person-configmap

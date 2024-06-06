@@ -5,18 +5,10 @@ metadata:
     app: person-db
   name: person-db
 spec:
-  clusterIP: 172.20.72.35
-  clusterIPs:
-    - 172.20.72.35
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
   ports:
     - port: 5432
       protocol: TCP
       targetPort: 5432
   selector:
     app: person-db
-  sessionAffinity: None
   type: ClusterIP
