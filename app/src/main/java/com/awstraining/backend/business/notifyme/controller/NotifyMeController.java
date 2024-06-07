@@ -5,11 +5,13 @@ import com.awstraining.backend.api.rest.v1.model.NotifyMe;
 import com.awstraining.backend.api.rest.v1.model.SentMessage;
 import com.awstraining.backend.business.notifyme.NotifyMeDO;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 // TODO: lab1
-//  1. Create RestController "notification/v1".
-//  2. Familiarize yourself with api, open-api contract, how it is generated?
+//  1. Familiarize yourself with api, open-api contract, how it is generated?
+@RestController
+@RequestMapping("notification/v1")
 public class NotifyMeController implements NotifyMeApi {
 
 
