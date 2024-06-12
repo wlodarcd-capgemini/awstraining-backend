@@ -6,7 +6,7 @@ Please review the file `person-service-deployment-v2.yaml` and apply it
 ```
 kubectl apply -f person-service-deployment-v2.yaml
 ```
-When you list the pods you can see the application pod is in status `OOMKilled`
+When you list the pods (try to repeat the command below more times) you can see the application pod is in status `OOMKilled`
 ```
 kubectl get pods
 ```
@@ -15,6 +15,8 @@ NAME                              READY   STATUS      RESTARTS     AGE
 person-db-6b7bcc8d4b-7x5fj        1/1     Running     0            9m10s
 person-service-68cc8cb485-t8g7p   0/1     OOMKilled   1 (6s ago)   10s
 ```
+
+Please observe the pod for some time. You will see the container is restarted and transits into `OOMKilled` state again. At the end Kubernetes gives away and you will see the status `CrashLoopBackOff`.
 
 This happens because you have set to low memory limit (`10Mi`) for the container. 
 

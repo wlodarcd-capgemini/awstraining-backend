@@ -11,7 +11,7 @@
 First generate AWS cli credentials on your AWS account. Save the generated `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY`  
 
 > **NOTE**  
-> DO NOT USER ROOT USER CREDENTIALS! Instead, create admin user in IAM, assign him AdministratorAccess policy and generate credentials for this non-root user.
+> DO NOT USE ROOT USER CREDENTIALS! Instead, create admin user in IAM, assign him AdministratorAccess policy and generate credentials for this non-root user.
 
 Configure the credentials on your system using AWS CLI:
 

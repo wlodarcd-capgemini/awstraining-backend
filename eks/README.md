@@ -9,5 +9,4 @@
 * [Create Ingress](07-ingress.md)
 * [CPU/Memory requests and limits](08-resource-management.md)
 * [Health Check (Probes)](09-probes.md)
-* ...
 * [Destroy the environment](99-destroy-the-environment.md)
