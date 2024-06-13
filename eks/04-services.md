@@ -10,7 +10,7 @@ Please review the file `person-db-service.yaml` and appy it using
 kubectl apply -f person-db-service.yaml
 ```
 
-List the existying services using 
+List the existing services using 
 ```
 kubectl get service
 ```
