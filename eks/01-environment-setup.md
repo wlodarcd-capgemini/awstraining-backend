@@ -3,7 +3,7 @@
 ## Requirements
 
 * AWS account with Administrator access
-* [awscli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.htmlhttps://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) v2 installed
+* [awscli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) v2 installed
 * [kubectl](https://kubernetes.io/docs/tasks/tools/) (1.28, 1.29) installed
 
 ## Generate and configure aws cli credentials

@@ -2,7 +2,7 @@
 
 ## Create config map and secret
 
-While creating the database pod you have set some configuration parameters to configure the database name, user and password. The parameters are set as environmebnt variables. You can set the values in a config map and sevret and attach them as environment variables in the deployment. When other pod (e.g. the person service you will deploy in the next steps) will need the information to be able to connect to the database, the same secrets can be attached to the pod to provide the informations.
+While creating the database pod you have set some configuration parameters to configure the database name, user and password. The parameters are set as environmebnt variables. You can set the values in a config map and secret and attach them as environment variables in the deployment. When other pod (e.g. the person service you will deploy in the next steps) will need the information to be able to connect to the database, the same secrets can be attached to the pod to provide the informations.
 
 Please create a config map with the database name and database host name. Review the file `person-configmap.yaml` and apply it
 ```
