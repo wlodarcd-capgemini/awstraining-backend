@@ -1,0 +1,48 @@
+---
+regions:
+  - "global" # This is for all global resource types e.g. IAM
+  - {REGION}
+
+account-blocklist:
+  - "1234567890"
+
+accounts:
+  "{ACCOUNT_ID}":
+    filters:
+      IAMUser:
+        - "{TECHNICAL_USER}"
+      IAMUserPolicyAttachment:
+        - "{TECHNICAL_USER} -> AdministratorAccess"
+        - "{TECHNICAL_USER} -> IAMUserChangePassword"
+      IAMLoginProfile:
+        - "{TECHNICAL_USER}"
+      IAMRole:
+        - "OrganizationAccountAccessRole"
+      IAMRolePolicyAttachment:
+        - "OrganizationAccountAccessRole -> AdministratorAccess"
+      EC2DHCPOption:
+        - property: DefaultVPC
+          value: "true"
+      EC2InternetGateway:
+        - property: DefaultVPC
+          value: "true"
+      EC2InternetGatewayAttachment:
+        - property: DefaultVPC
+          value: "true"
+      EC2RouteTable:
+        - property: DefaultVPC
+          value: "true"
+      EC2Subnet:
+        - property: DefaultVPC
+          value: "true"
+      EC2VPC:
+        - property: IsDefault
+          value: "true"
+      # END: Filter all default VPC resources
+
+resource-types:
+  excludes:
+    - EC2DefaultSecurityGroupRule
+    - OSPackage
+    - IAMGroupPolicyAttachment
+    - IAMUserAccessKey
