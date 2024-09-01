@@ -26,7 +26,6 @@
 * CloudWatch Introduction & Hands-on
 * ECS Fargate Introduction & Hands-on
 * Load balancer Hands-on
-* Cloud9 Hands-on
 * Summary & questions
 * Infrastructure clean-up
 
