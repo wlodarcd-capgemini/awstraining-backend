@@ -32,6 +32,26 @@ ${jsonencode(
         "arn:aws:ssm:${region}:${account_id}:parameter/config/application*",
         "arn:aws:ssm:${region}:${account_id}:parameter/config/backend*"
       ]
+    },
+    {
+        "Effect": "Allow",
+        "Action": "s3:PutObject",
+        "Resource": "*"
+    },
+    {
+        "Effect": "Allow",
+        "Action": "sns:Publish",
+        "Resource": "*"
+    },
+    {
+        "Effect": "Allow",
+        "Action": "translate:TranslateText",
+        "Resource": "*"
+    },
+    {
+            "Effect": "Allow",
+            "Action": "comprehend:DetectSentiment",
+            "Resource": "*"
     }
   ]
 }
